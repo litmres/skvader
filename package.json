@@ -1,0 +1,25 @@
+{
+  "name": "skvader",
+  "version": "0.0.1",
+  "description": "A simple game made during, the latter part of, November as part of the Itch.io Game Off 2018 game jam.",
+  "main": "game.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stevejaxon/skvader.git"
+  },
+  "keywords": [
+    "roguelike-game",
+    "game-jam",
+    "rot.js",
+    "nodejs"
+  ],
+  "author": "SteveJaxon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stevejaxon/skvader/issues"
+  },
+  "homepage": "https://github.com/stevejaxon/skvader#readme"
+}
