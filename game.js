@@ -1,6 +1,7 @@
 const Game = {
     display: null,
     map: {},
+    player: null,
 
     init: function() {
         this.display = new ROT.Display();
@@ -26,6 +27,7 @@ const Game = {
         digger.create(digCallback.bind(this));
         this._generateBoxes(freeCells);
         this._drawWholeMap();
+        this._createPlayer(freeCells);
     },
 
     _drawWholeMap: function() {
@@ -43,5 +45,24 @@ const Game = {
             const key = freeCells.splice(index, 1)[0];
             this.map[key] = "*";
         }
+    },
+
+    _createPlayer: function(freeCells) {
+        const index = Math.floor(ROT.RNG.getUniform() * freeCells.length);
+        const key = freeCells.splice(index, 1)[0];
+        const parts = key.split(",");
+        const x = parseInt(parts[0]);
+        const y = parseInt(parts[1]);
+        this.player = new Player(x, y);
     }
-}
+};
+
+const Player = function(x, y) {
+    this._x = x;
+    this._y = y;
+    this._draw();
+};
+
+Player.prototype._draw = function() {
+    Game.display.draw(this._x, this._y, "@", "#ff0");
+};
