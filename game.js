@@ -22,7 +22,7 @@ const Game = {
     isPassable: function(x,y) {
         let tileType = this.map[x+","+y];
         console.log(tileType);
-        return tileType === "." || tileType === "*";
+        return tileType === "." || tileType === "*" || tileType === "+";
     },
 
     _generateMap: function() {
@@ -101,26 +101,26 @@ Player.prototype.handleEvent = function(e) {
     keyMap[35] = 5;
     keyMap[37] = 6;
     keyMap[36] = 7;
+    keyMap[13] = 99;
+    keyMap[32] = 99;
 
     var code = e.keyCode;
-    if (code === 13 || code === 32) {
-        this._checkBox();
-        return;
-    }
     /* one of numpad directions? */
     if (!(code in keyMap)) { return; }
+    if (code === 13 || code === 32) {
+        this._checkBox();
+    } else {
+        /* is there a free space? */
+        var dir = ROT.DIRS[8][keyMap[code]];
+        var newX = this._x + dir[0];
+        var newY = this._y + dir[1];
+        if (!Game.isPassable(newX, newY)) { return; }
 
-    /* is there a free space? */
-    var dir = ROT.DIRS[8][keyMap[code]];
-    var newX = this._x + dir[0];
-    var newY = this._y + dir[1];
-    var newKey = newX + "," + newY;
-    if (!Game.isPassable(newX, newY)) { return; }
-
-    Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y]);
-    this._x = newX;
-    this._y = newY;
-    this._draw();
+        Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y]);
+        this._x = newX;
+        this._y = newY;
+        this._draw();
+    }
     window.removeEventListener("keydown", this);
     Game.engine.unlock();
 };
@@ -135,6 +135,7 @@ Player.prototype._checkBox = function() {
         window.removeEventListener("keydown", this);
     } else {
         alert("This box is empty :-(");
+        Game.map[key] = "+";
     }
 };
 
