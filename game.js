@@ -2,7 +2,9 @@ const Game = {
     display: null,
     map: {},
     player: null,
+    pedro: null,
     engine: null,
+    ananas: null,
 
     init: function() {
         this.display = new ROT.Display();
@@ -11,9 +13,16 @@ const Game = {
 
         const scheduler = new ROT.Scheduler.Simple();
         scheduler.add(this.player, true);
+        scheduler.add(this.pedro, true);
 
         this.engine = new ROT.Engine(scheduler);
         this.engine.start();
+    },
+
+    isPassable: function(x,y) {
+        let tileType = this.map[x+","+y];
+        console.log(tileType);
+        return tileType === "." || tileType === "*";
     },
 
     _generateMap: function() {
@@ -34,7 +43,8 @@ const Game = {
         digger.create(digCallback.bind(this));
         this._generateBoxes(freeCells);
         this._drawWholeMap();
-        this._createPlayer(freeCells);
+        this.player = this._createBeing(Player, freeCells);
+        this.pedro = this._createBeing(Pedro, freeCells);
     },
 
     _drawWholeMap: function() {
@@ -51,16 +61,17 @@ const Game = {
             const index = Math.floor(ROT.RNG.getUniform() * freeCells.length);
             const key = freeCells.splice(index, 1)[0];
             this.map[key] = "*";
+            if (!i) { this.ananas = key; } /* first box contains an ananas */
         }
     },
 
-    _createPlayer: function(freeCells) {
+    _createBeing: function(what, freeCells) {
         const index = Math.floor(ROT.RNG.getUniform() * freeCells.length);
         const key = freeCells.splice(index, 1)[0];
         const parts = key.split(",");
         const x = parseInt(parts[0]);
         const y = parseInt(parts[1]);
-        this.player = new Player(x, y);
+        return new what(x, y);
     }
 };
 
@@ -78,7 +89,7 @@ Player.prototype.act = function() {
     Game.engine.lock();
     /* wait for user input; do stuff when user hits a key */
     window.addEventListener("keydown", this);
-}
+};
 
 Player.prototype.handleEvent = function(e) {
     var keyMap = {};
@@ -92,6 +103,10 @@ Player.prototype.handleEvent = function(e) {
     keyMap[36] = 7;
 
     var code = e.keyCode;
+    if (code === 13 || code === 32) {
+        this._checkBox();
+        return;
+    }
     /* one of numpad directions? */
     if (!(code in keyMap)) { return; }
 
@@ -100,7 +115,7 @@ Player.prototype.handleEvent = function(e) {
     var newX = this._x + dir[0];
     var newY = this._y + dir[1];
     var newKey = newX + "," + newY;
-    if (!(newKey in Game.map)) { return; }
+    if (!Game.isPassable(newX, newY)) { return; }
 
     Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y]);
     this._x = newX;
@@ -108,4 +123,60 @@ Player.prototype.handleEvent = function(e) {
     this._draw();
     window.removeEventListener("keydown", this);
     Game.engine.unlock();
-}
+};
+
+Player.prototype._checkBox = function() {
+    const key = this._x + "," + this._y;
+    if (Game.map[key] !== "*") {
+        alert("There is no box here!");
+    } else if (key === Game.ananas) {
+        alert("Hooray! You found an ananas and won this game.");
+        Game.engine.lock();
+        window.removeEventListener("keydown", this);
+    } else {
+        alert("This box is empty :-(");
+    }
+};
+
+Player.prototype.getX = function() { return this._x; };
+
+Player.prototype.getY = function() { return this._y; };
+
+const Pedro = function(x, y) {
+    this._x = x;
+    this._y = y;
+    this._draw();
+};
+
+Pedro.prototype._draw = function() {
+    Game.display.draw(this._x, this._y, "P", "red");
+};
+
+Pedro.prototype.act = function() {
+    const x = Game.player.getX();
+    const y = Game.player.getY();
+    const passableCallback = function(x, y) {
+        return Game.isPassable(x, y);
+    };
+    const astar = new ROT.Path.AStar(x, y, passableCallback, {topology:4});
+
+    const path = [];
+    const pathCallback = function(x, y) {
+        path.push([x, y]);
+    };
+    astar.compute(this._x, this._y, pathCallback);
+
+    path.shift(); /* remove Pedro's position */
+    console.log(path.length);
+    if (path.length === 1) {
+        Game.engine.lock();
+        alert("Game over - you were captured by Pedro!");
+    } else {
+        let x = path[0][0];
+        let y = path[0][1];
+        Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y]);
+        this._x = x;
+        this._y = y;
+        this._draw();
+    }
+};
