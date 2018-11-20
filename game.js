@@ -7,7 +7,13 @@ const Game = {
     ananas: null,
 
     init: function() {
-        this.display = new ROT.Display();
+        this.display = new ROT.Display({
+            width: 100,
+            height: 50,
+            bg: "#000",
+            fontSize: 20,
+            layout: "rect"
+        });
         document.body.appendChild(this.display.getContainer());
         this._generateMap();
 
@@ -26,7 +32,9 @@ const Game = {
     },
 
     _generateMap: function() {
-        const digger = new ROT.Map.Digger();
+        const digger = new ROT.Map.Digger(100, 50, {
+            dugPercentage: 0.35
+        });
         const freeCells = [];
 
         const digCallback = function(x, y, value) {
