@@ -32,9 +32,7 @@ const Game = {
     },
 
     _generateMap: function() {
-        const digger = new ROT.Map.Digger(100, 50, {
-            dugPercentage: 0.35
-        });
+        const digger = new ROT.Map.Uniform(100, 50);
         const freeCells = [];
 
         const digCallback = function(x, y, value) {
