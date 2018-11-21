@@ -95,14 +95,20 @@ Player.prototype.updateView = function() {
         const parts = key.split(",");
         const x = parseInt(parts[0]);
         const y = parseInt(parts[1]);
-        Game.display.draw(x, y, this._mapDiscovered[key], "#747474");
+        Game.display.draw(x, y, this._mapDiscovered[key], "#5d5d5d");
     }
     this._fov.compute(this._x, this._y, this._vision, function(x, y, r, visibility) {
         let key = x+","+y;
         let ch = Game.map[key];
         that._mapDiscovered[key] = ch;
-        Game.display.draw(x, y, ch, "#fff");
+        console.log(`r: ${r} - ${that.darkenView("#fff", r)}`);
+        Game.display.draw(x, y, ch, that.darkenView("#fff", r));
     });
+};
+
+Player.prototype.darkenView = function(color, distance) {
+    if (!color) { return color; }
+    return ROT.Color.toRGB(ROT.Color.fromString(color).map(x => x - (distance * 5)));
 };
 
 Player.prototype.act = function() {
