@@ -32,7 +32,6 @@ const Game = {
 
     _generateMap: function() {
         const digger = new ROT.Map.Uniform(100, 50);
-        const freeCells = [];
 
         const digCallback = function(x, y, value) {
             const key = x+","+y;
@@ -42,15 +41,34 @@ const Game = {
                 this.map[key] = "%";
             } else {
                 this.map[key] = ".";
-                freeCells.push(key);
             }
         };
         digger.create(digCallback.bind(this));
         this.map.rooms = digger.getRooms();
         this.map.corridors = digger.getCorridors();
+        this._generateDoors();
+        let freeCells = this._getFreeCells();
         this._generateBoxes(freeCells);
         this.player = this._createBeing(Player, freeCells);
         this.pedro = this._createBeing(Pedro, freeCells);
+    },
+
+    _getFreeCells: function() {
+        const freeCells = [];
+        for (let key in this.map) {
+            if (this.map[key] === ".") {
+                freeCells.push(key);
+            }
+        }
+        return freeCells;
+    },
+
+    _generateDoors: function() {
+        for (let key in this.map.rooms) {
+            for (let door in this.map.rooms[key]._doors) {
+                this.map[door] = "#";
+            }
+        }
     },
 
     _generateBoxes: function(freeCells) {
@@ -101,7 +119,6 @@ Player.prototype.updateView = function() {
         let key = x+","+y;
         let ch = Game.map[key];
         that._mapDiscovered[key] = ch;
-        console.log(`r: ${r} - ${that.darkenView("#fff", r)}`);
         Game.display.draw(x, y, ch, that.darkenView("#fff", r));
     });
 };
@@ -178,7 +195,7 @@ const Pedro = function(x, y) {
     this._vision = 15;
     this._fov = new ROT.FOV.RecursiveShadowcasting(function(x, y) {
         let tileType = Game.map[x+","+y];
-        return tileType === "." || tileType === "*" || tileType === "+";
+        return tileType === "." || tileType === "*" || tileType === "+" || tileType === "/";
     });
     this.roomsToCheck = Game.map.rooms;
     this.destinationRoom = {};
@@ -191,7 +208,7 @@ Pedro.prototype._draw = function() {
 
 Pedro.prototype.act = function() {
     const passableCallback = function(x, y) {
-        return Game.isPassable(x, y);
+        return Game.pedro._pathing(x, y);
     };
     const path = [];
     const pathCallback = function(x, y) {
@@ -264,6 +281,11 @@ Pedro.prototype.canSeePlayer = function () {
         }
     });
     return seenPlayer;
+};
+
+Pedro.prototype._pathing = function(x,y) {
+    let tileType = Game.map[x+","+y];
+    return tileType === "." || tileType === "*" || tileType === "+" || tileType === "#" || tileType === "/";
 };
 
 Pedro.prototype.getX = function() { return this._x; };
