@@ -134,7 +134,10 @@ Player.prototype.handleEvent = function(e) {
         var newX = this._x + dir[0];
         var newY = this._y + dir[1];
         if (!Game.isPassable(newX, newY)) { return; }
-
+        if (newX === Game.pedro.getX() && newY === Game.pedro.getY()) {
+            alert("Game over - you were captured by Pedro!");
+            return;
+        }
         Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y]);
         this._x = newX;
         this._y = newY;
@@ -173,7 +176,6 @@ const Pedro = function(x, y) {
     this.roomsToCheck = Game.map.rooms;
     this.destinationRoom = {};
     this.hasSpottedPlayer = false;
-    this._draw();
 };
 
 Pedro.prototype._draw = function() {
@@ -237,10 +239,8 @@ Pedro.prototype.act = function() {
         } else {
             let x = path[0][0];
             let y = path[0][1];
-            Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y]);
             this._x = x;
             this._y = y;
-            this._draw();
         }
     }
 };
@@ -258,3 +258,7 @@ Pedro.prototype.canSeePlayer = function () {
     });
     return seenPlayer;
 };
+
+Pedro.prototype.getX = function() { return this._x; };
+
+Pedro.prototype.getY = function() { return this._y; };
