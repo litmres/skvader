@@ -91,16 +91,17 @@ Player.prototype._draw = function() {
 
 Player.prototype.updateView = function() {
     let that = this;
+    for (let key in this._mapDiscovered) {
+        const parts = key.split(",");
+        const x = parseInt(parts[0]);
+        const y = parseInt(parts[1]);
+        Game.display.draw(x, y, this._mapDiscovered[key], "#747474");
+    }
     this._fov.compute(this._x, this._y, this._vision, function(x, y, r, visibility) {
         let key = x+","+y;
         let ch = Game.map[key];
-        /*if(r) {
-            ch = Game.map[key];
-            that._mapDiscovered = Game.map[key];
-        }*/
-        // var color = (data[] ? "#aa0": "#660");
-        //display.draw(x, y, ch, "#fff", color);
-        Game.display.draw(x, y, ch);
+        that._mapDiscovered[key] = ch;
+        Game.display.draw(x, y, ch, "#fff");
     });
 };
 
