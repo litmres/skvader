@@ -1,10 +1,19 @@
 {
   "name": "skvader",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A simple game made during, the latter part of, November as part of the Itch.io Game Off 2018 game jam.",
-  "main": "game.js",
+  "main": "index.html",
+  "private": true,
+  "dependencies": {
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-scripts": "2.1.1"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "repository": {
     "type": "git",
@@ -15,6 +24,15 @@
     "game-jam",
     "rot.js",
     "nodejs"
+  ],
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
   ],
   "author": "SteveJaxon",
   "license": "MIT",
