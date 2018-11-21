@@ -27,7 +27,7 @@ const Game = {
 
     isPassable: function(x,y) {
         let tileType = this.map[x+","+y];
-        return tileType === "." || tileType === "*" || tileType === "+";
+        return tileType === "." || tileType === "*" || tileType === "+" || tileType === "/";
     },
 
     _generateMap: function() {
@@ -144,19 +144,20 @@ Player.prototype.handleEvent = function(e) {
     keyMap[35] = 5;
     keyMap[37] = 6;
     keyMap[36] = 7;
-    keyMap[13] = 99;
-    keyMap[32] = 99;
+    keyMap[13] = 4;
+    keyMap[32] = 4;
 
     var code = e.keyCode;
     /* one of numpad directions? */
     if (!(code in keyMap)) { return; }
     if (code === 13 || code === 32) {
+        this._checkOpenDoor();
         this._checkBox();
     } else {
         /* is there a free space? */
-        var dir = ROT.DIRS[8][keyMap[code]];
-        var newX = this._x + dir[0];
-        var newY = this._y + dir[1];
+        let dir = ROT.DIRS[8][keyMap[code]];
+        let newX = this._x + dir[0];
+        let newY = this._y + dir[1];
         if (!Game.isPassable(newX, newY)) { return; }
         if (newX === Game.pedro.getX() && newY === Game.pedro.getY()) {
             alert("Game over - you were captured by Pedro!");
@@ -173,15 +174,28 @@ Player.prototype.handleEvent = function(e) {
 
 Player.prototype._checkBox = function() {
     const key = this._x + "," + this._y;
-    if (Game.map[key] !== "*") {
-        alert("There is no box here!");
-    } else if (key === Game.ananas) {
-        alert("Hooray! You found an ananas and won this game.");
-        Game.engine.lock();
-        window.removeEventListener("keydown", this);
-    } else {
-        alert("This box is empty :-(");
-        Game.map[key] = "+";
+    if (Game.map[key] === "*") {
+        if (key === Game.ananas) {
+            alert("Hooray! You found an ananas and won this game.");
+            Game.engine.lock();
+            window.removeEventListener("keydown", this);
+        } else {
+            alert("This box is empty :-(");
+            Game.map[key] = "+";
+        }
+    }
+};
+
+Player.prototype._checkOpenDoor = function() {
+    let dirs = ROT.DIRS[4];
+    for(let dir in dirs) {
+        let newX = this._x + dirs[dir][0];
+        let newY = this._y + dirs[dir][1];
+        let newKey = `${newX},${newY}`;
+        if (Game.map[newKey] === "#") {
+            Game.map[newKey] = "/";
+            Game.display.draw(newX, newY, "/");
+        }
     }
 };
 
