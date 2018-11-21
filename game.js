@@ -27,7 +27,6 @@ const Game = {
 
     isPassable: function(x,y) {
         let tileType = this.map[x+","+y];
-        console.log(tileType);
         return tileType === "." || tileType === "*" || tileType === "+";
     },
 
@@ -47,19 +46,11 @@ const Game = {
             }
         };
         digger.create(digCallback.bind(this));
+        this.map.rooms = digger.getRooms();
+        this.map.corridors = digger.getCorridors();
         this._generateBoxes(freeCells);
-        this._drawWholeMap();
         this.player = this._createBeing(Player, freeCells);
         this.pedro = this._createBeing(Pedro, freeCells);
-    },
-
-    _drawWholeMap: function() {
-        for (let key in this.map) {
-            const parts = key.split(",");
-            const x = parseInt(parts[0]);
-            const y = parseInt(parts[1]);
-            this.display.draw(x, y, this.map[key]);
-        }
     },
 
     _generateBoxes: function(freeCells) {
@@ -84,11 +75,33 @@ const Game = {
 const Player = function(x, y) {
     this._x = x;
     this._y = y;
+    this._vision = 10;
+    this._fov = new ROT.FOV.RecursiveShadowcasting(function(x, y) {
+        let tileType = Game.map[x+","+y];
+        return tileType === "." || tileType === "*" || tileType === "+";
+    });
+    this._mapDiscovered = {};
     this._draw();
 };
 
 Player.prototype._draw = function() {
+    this.updateView();
     Game.display.draw(this._x, this._y, "@", "#ff0");
+};
+
+Player.prototype.updateView = function() {
+    let that = this;
+    this._fov.compute(this._x, this._y, this._vision, function(x, y, r, visibility) {
+        let key = x+","+y;
+        let ch = Game.map[key];
+        /*if(r) {
+            ch = Game.map[key];
+            that._mapDiscovered = Game.map[key];
+        }*/
+        // var color = (data[] ? "#aa0": "#660");
+        //display.draw(x, y, ch, "#fff", color);
+        Game.display.draw(x, y, ch);
+    });
 };
 
 Player.prototype.act = function() {
@@ -152,6 +165,14 @@ Player.prototype.getY = function() { return this._y; };
 const Pedro = function(x, y) {
     this._x = x;
     this._y = y;
+    this._vision = 15;
+    this._fov = new ROT.FOV.RecursiveShadowcasting(function(x, y) {
+        let tileType = Game.map[x+","+y];
+        return tileType === "." || tileType === "*" || tileType === "+";
+    });
+    this.roomsToCheck = Game.map.rooms;
+    this.destinationRoom = {};
+    this.hasSpottedPlayer = false;
     this._draw();
 };
 
@@ -160,30 +181,80 @@ Pedro.prototype._draw = function() {
 };
 
 Pedro.prototype.act = function() {
-    const x = Game.player.getX();
-    const y = Game.player.getY();
     const passableCallback = function(x, y) {
         return Game.isPassable(x, y);
     };
-    const astar = new ROT.Path.AStar(x, y, passableCallback, {topology:4});
-
     const path = [];
     const pathCallback = function(x, y) {
         path.push([x, y]);
     };
-    astar.compute(this._x, this._y, pathCallback);
 
-    path.shift(); /* remove Pedro's position */
-    console.log(path.length);
-    if (path.length === 1) {
-        Game.engine.lock();
-        alert("Game over - you were captured by Pedro!");
+    if (this.hasSpottedPlayer) {
+        console.log("PEDRO HAS SPOTTED THE PLAYER - BEWARE...");
+        const x = Game.player.getX();
+        const y = Game.player.getY();
+        const astar = new ROT.Path.AStar(x, y, passableCallback, {topology:4});
+        astar.compute(this._x, this._y, pathCallback);
+        path.shift(); /* remove Pedro's position */
+        if (path.length === 1) {
+            Game.engine.lock();
+            alert("Game over - you were captured by Pedro!");
+        } else {
+            let x = path[0][0];
+            let y = path[0][1];
+            Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y]);
+            this._x = x;
+            this._y = y;
+            this._draw();
+        }
     } else {
-        let x = path[0][0];
-        let y = path[0][1];
-        Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y]);
-        this._x = x;
-        this._y = y;
-        this._draw();
+        let destX;
+        let destY;
+        if (this.canSeePlayer()) {
+            this.hasSpottedPlayer = true;
+            destX = Game.player.getX();
+            destY = Game.player.getY();
+        } else if (! this.destinationRoom.x) {
+            if (this.roomsToCheck === []) {
+                // If we've visited all of the rooms, then repopulate the list
+                this.roomsToCheck = Game.map.rooms;
+            }
+            let newTargetRoom = this.roomsToCheck.shift();
+            this.destinationRoom.x = newTargetRoom._x1;
+            this.destinationRoom.y = newTargetRoom._y1;
+            destX = this.destinationRoom.x;
+            destY = this.destinationRoom.y;
+        } else {
+            destX = this.destinationRoom.x;
+            destY = this.destinationRoom.y;
+        }
+        const astar = new ROT.Path.AStar(destX, destY, passableCallback, {topology:4});
+        astar.compute(this._x, this._y, pathCallback);
+        path.shift(); /* remove Pedro's position */
+        if (path.length === 1) {
+            console.log("PEDRO HAS REACHED A ROOM");
+            this.destinationRoom = {};
+        } else {
+            let x = path[0][0];
+            let y = path[0][1];
+            Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y]);
+            this._x = x;
+            this._y = y;
+            this._draw();
+        }
     }
+};
+
+Pedro.prototype.canSeePlayer = function () {
+    let seenPlayer = false;
+    const playerX = Game.player.getX();
+    const playerY = Game.player.getY();
+    this._fov.compute(this._x, this._y, this._vision, function(x, y, r, visibility) {
+        if (! seenPlayer) {
+            if (x === playerX && y === playerY) {
+                seenPlayer = true;
+            }
+        }
+    });
+    return seenPlayer;
 };
