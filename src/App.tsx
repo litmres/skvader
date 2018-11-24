@@ -20,8 +20,14 @@ class App extends Component<{}, MyComponentState> {
     return (
       <div className="App">
         <header className="App-header">
-            <div id="game-display" />
         </header>
+        <div className="row">
+          <div className="col-md-8">
+            <div id="game-display" className="Game-display"/>
+          </div>
+          <div className="col-md-4">
+          </div>
+        </div>
       </div>
     );
   }
