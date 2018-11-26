@@ -1,14 +1,17 @@
 import {Display} from 'rot-js';
-import {DISPLAY_WIDTH, DISPLAY_HEIGHT} from './constants';
+import {DISPLAY_WIDTH, DISPLAY_HEIGHT} from './Constants';
+import {Player} from "./Player";
 
 export class Game {
-    private display: Display;
+    private readonly display: Display;
+    private readonly player: Player;
 
     constructor() {
         this.display = new Display({
             width: DISPLAY_WIDTH,
             height: DISPLAY_HEIGHT
         });
+        this.player = new Player();
     }
 
     newGame() {
@@ -19,5 +22,9 @@ export class Game {
         this.display.draw(15, 4, "%", "#0f0");          // foreground color
         this.display.draw(25, 4, "#", "#f00", "#009");  // and background color
         console.log(gameDisplay)
+    }
+
+    getPlayer(): Player {
+        return this.player;
     }
 }

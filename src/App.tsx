@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
-import {Game} from "./game";
+import {Game} from "./Game";
+import {InventoryItems} from "./InventoryItems";
 
-interface MyComponentState { game :  Game }
+interface GameState { game :  Game }
 
-class App extends Component<{}, MyComponentState> {
+class App extends Component<{}, GameState> {
   constructor(props: any) {
       super(props);
       this.state = {
@@ -26,6 +27,8 @@ class App extends Component<{}, MyComponentState> {
             <div id="game-display" className="Game-display"/>
           </div>
           <div className="col-md-4">
+              <h1>Inventory</h1>
+              <InventoryItems gameInstance={this.state.game}/>
           </div>
         </div>
       </div>
