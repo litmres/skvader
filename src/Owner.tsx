@@ -87,3 +87,11 @@ export const INTRO_SPEECH_TEXT = [
         "I will show you where to start looking for the equipment..."
     ]
 ];
+
+export const CHAPTER_ONE_INTRO_TEXT = [
+    [
+        "Hello World",
+        "",
+        ""
+    ]
+];
