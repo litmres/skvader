@@ -12,14 +12,14 @@ export class Owner extends Component<TextStateProps>{
         "                   ;;;;;;;;;;;;;;;;;",
         "                ;;;;;;;;;;;;     ;;;;;",
         "               ;;;;;    ;;;         \\;;",
-        "              ;;;;;      ;;          |;     ............................................",
-        "             ;;;;         ;          |      .                                          .",
+        "              ;;;;;      ;;          |;     ....................................................................",
+        "             ;;;;         ;          |      .                                                                  .",
         "             ;;;                     |      . ",
         "              ;;                     )      . ",
         "               \\    ~~~~ ~~~~~~~    /       . ",
-        "                \\    ~~~~~~~  ~~   /        .                                          .",
-        "              |\\ \\                / /|      .       [Press the return key to continue] .",
-        "               \\\\| %%%%%    %%%%% |//       ............................................",
+        "                \\    ~~~~~~~  ~~   /        .                                                                  .",
+        "              |\\ \\                / /|      .                               [Press the return key to continue] .",
+        "               \\\\| %%%%%    %%%%% |//       ....................................................................",
         "              [[====================]]     ........",
         "               | |  ^   |   |   ^  | |    ......",
         "               | | :@:  |   |  :@: | |   ..... ",
@@ -41,7 +41,7 @@ export class Owner extends Component<TextStateProps>{
         ""
     ];
     private readonly textStartRow = 7;
-    private readonly maxCharacterNum = 40;
+    private readonly maxCharacterNum = 64;
 
     /**
      *
@@ -56,10 +56,34 @@ export class Owner extends Component<TextStateProps>{
         ownerAscii[this.textStartRow+2] = ownerAscii[this.textStartRow+2] + this.padTextForSpeechBubble(speechText[2]) + " .";
     }
     render() {
-        this.addSpeechText(this.asciiOwner, this.props.speech);
-        let itemsList = this.asciiOwner.map(function(item){
+        let template = Array.from(this.asciiOwner);
+        this.addSpeechText(template, this.props.speech);
+        let itemsList = template.map(function(item){
             return <span>{item}<br/></span>;
         });
         return <pre>{ itemsList }</pre>
     }
 }
+
+export const INTRO_SPEECH_TEXT = [
+    [
+        "Hello, my name is Francisco Cuisinier.",
+        "I'm the owner of this restaurant: Restaurant l' alimentation.",
+        "The greatest restaurant in the world."
+    ],
+    [
+        "I am a fantastic chef.",
+        "It is understandable why you came here looking for work.",
+        "I can teach you all there is to know, but it will not be easy."
+    ],
+    [
+        "Many have trained with me, but very few are successful.",
+        "We will start with the very basics and see how you fair.",
+        ""
+    ],
+    [
+        "Before we can prepare for your first service",
+        "you will need the appropriate equipment.",
+        "I will show you where to find it..."
+    ]
+];
