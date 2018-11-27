@@ -16,14 +16,14 @@ export class Owner extends Component<DialogueStateProps>{
         "                   ;;;;;;;;;;;;;;;;;",
         "                ;;;;;;;;;;;;     ;;;;;",
         "               ;;;;;    ;;;         \\;;",
-        "              ;;;;;      ;;          |;     ....................................................................",
-        "             ;;;;         ;          |      .                                                                  .",
-        "             ;;;                     |      . ",
-        "              ;;                     )      . ",
-        "               \\    ~~~~ ~~~~~~~    /       . ",
-        "                \\    ~~~~~~~  ~~   /        .                                                                  .",
-        "              |\\ \\                / /|      . ",
-        "               \\\\| %%%%%    %%%%% |//       ....................................................................",
+        "              ;;;;;      ;;          |;     |==================================================================|",
+        "             ;;;;         ;          |      |                                                                  |",
+        "             ;;;                     |      | ",
+        "              ;;                     )      | ",
+        "               \\    ~~~~ ~~~~~~~    /       | ",
+        "                \\    ~~~~~~~  ~~   /        |                                                                  |",
+        "              |\\ \\                / /|      | ",
+        "               \\\\| %%%%%    %%%%% |//       |==================================================================|",
         "              [[====================]]     ........",
         "               | |  ^   |   |   ^  | |    ......",
         "               | | :@:  |   |  :@: | |   ..... ",
@@ -56,10 +56,10 @@ export class Owner extends Component<DialogueStateProps>{
         return speechText.padEnd(this.maxCharacterNum, " ");
     }
     private addDialogueText(ownerAscii: string[], speechText: string[], current: number, end: number) {
-        ownerAscii[this.textStartRow] = ownerAscii[this.textStartRow] + this.padTextForSpeechBubble(speechText[0]) + " .";
-        ownerAscii[this.textStartRow+1] = ownerAscii[this.textStartRow+1] + this.padTextForSpeechBubble(speechText[1]) + " .";
-        ownerAscii[this.textStartRow+2] = ownerAscii[this.textStartRow+2] + this.padTextForSpeechBubble(speechText[2]) + " .";
-        ownerAscii[this.dialogueIndexRow] = ownerAscii[this.dialogueIndexRow] + `[${current}\\${end}][Press the return key to continue]`.padStart(this.maxCharacterNum, " ") + " .";
+        ownerAscii[this.textStartRow] = ownerAscii[this.textStartRow] + this.padTextForSpeechBubble(speechText[0]) + " |";
+        ownerAscii[this.textStartRow+1] = ownerAscii[this.textStartRow+1] + this.padTextForSpeechBubble(speechText[1]) + " |";
+        ownerAscii[this.textStartRow+2] = ownerAscii[this.textStartRow+2] + this.padTextForSpeechBubble(speechText[2]) + " |";
+        ownerAscii[this.dialogueIndexRow] = ownerAscii[this.dialogueIndexRow] + `[${current}\\${end}][Press the return key to continue]`.padStart(this.maxCharacterNum, " ") + " |";
     }
     render() {
         let template = Array.from(this.asciiOwner);
