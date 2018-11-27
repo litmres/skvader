@@ -50,7 +50,7 @@ export class Intro extends Component<IEmitterProps, IntroState> {
             display = (
                 <div className="intro-owner-and-restaurant">
                     <div className="owner">
-                        <Owner speech={INTRO_SPEECH_TEXT[this.state.ownerDialogueNumber]}/>
+                        <Owner dialogue={INTRO_SPEECH_TEXT[this.state.ownerDialogueNumber]} currentDialogueNumber={this.state.ownerDialogueNumber+1} maxDialogueNumber={INTRO_SPEECH_TEXT.length}/>
                     </div>
                     <div className="restaurant">
                         <IntroBackgroundRestaurant/>

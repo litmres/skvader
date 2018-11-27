@@ -33,7 +33,7 @@ export class ChapterOneIntro extends Component<IEmitterProps, ChapterOneIntroSta
             <div className="Intro">
                 <div className="intro-owner-and-door">
                     <div className="owner">
-                        <Owner speech={CHAPTER_ONE_INTRO_TEXT[this.state.ownerDialogueNumber]}/>
+                        <Owner dialogue={CHAPTER_ONE_INTRO_TEXT[this.state.ownerDialogueNumber]} currentDialogueNumber={this.state.ownerDialogueNumber+1} maxDialogueNumber={CHAPTER_ONE_INTRO_TEXT.length}/>
                     </div>
                     <div className="door">
                         <IntroBackgroundDoor/>
