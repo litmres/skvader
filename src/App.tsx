@@ -1,39 +1,40 @@
-import React, { Component } from 'react';
+import {EventEmitter} from 'fbemitter';
+import React, {Component} from 'react';
 import './App.css';
-import {Game} from "./Game";
-import {InventoryItems} from "./InventoryItems";
+import {INTRO_FINISHED} from "./Constants";
+import {Game} from './Game';
+import {Intro} from './Intro';
 
-interface GameState { game :  Game }
+interface GameState {
+    game: Game,
+    isIntroFinished: boolean
+}
 
 class App extends Component<{}, GameState> {
-  constructor(props: any) {
-      super(props);
-      this.state = {
-          game: new Game()
-      };
-  }
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            game: new Game(),
+            isIntroFinished: false
+        };
+        // TODO: is there a better solution for finding out when the Intro has finished other than EventEmitters?
+        const emitter = new EventEmitter();
+        emitter.once(INTRO_FINISHED, this.handleIntroFinished);
+    }
 
-  componentDidMount() {
-      this.state.game.newGame();
-  }
+    render() {
+        return (
+            <div className="App">
+                <Intro/>
+            </div>
+        );
+    }
 
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-        </header>
-        <div className="row">
-          <div className="col-md-8">
-            <div id="game-display" className="Game-display"/>
-          </div>
-          <div className="col-md-4">
-              <h1>Inventory</h1>
-              <InventoryItems gameInstance={this.state.game}/>
-          </div>
-        </div>
-      </div>
-    );
-  }
+    private handleIntroFinished() {
+        this.setState({
+            isIntroFinished: true
+        })
+    }
 }
 
 export default App;

@@ -1,2 +1,7 @@
-export const DISPLAY_WIDTH = 100;
-export const DISPLAY_HEIGHT = 50;
+export const DISPLAY_WIDTH: number = 100;
+export const DISPLAY_HEIGHT: number = 50;
+
+// Event Constants
+export const TITLE_FINISHED: string = "title-finished";
+export const PROGRESS_DIALOGUE: string = "progress-dialogue";
+export const INTRO_FINISHED: string = "intro-finished";

@@ -82,8 +82,8 @@ export const INTRO_SPEECH_TEXT = [
         ""
     ],
     [
-        "Before we can prepare for your first service",
-        "you will need the appropriate equipment.",
-        "I will show you where to find it..."
+        "First things first, you must gather the necessary equipment.",
+        "We have everything that you will need on these premises.",
+        "I will show you where to start looking for the equipment..."
     ]
 ];
