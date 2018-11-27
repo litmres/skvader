@@ -2,9 +2,10 @@ import {EventEmitter} from "fbemitter";
 import React, { Component } from 'react';
 import './App.css';
 import {INTRO_FINISHED, PROGRESS_DIALOGUE, TITLE_FINISHED} from './Constants';
+import {IEmitterProps} from "./IEmitterProps";
+import {IntroBackgroundRestaurant} from "./IntroBackgroundRestaurant";
 import {INTRO_SPEECH_TEXT, Owner} from "./Owner";
 import {Title} from "./Title";
-import {IntroBackgroundRestaurant} from "./IntroBackgroundRestaurant";
 
 interface IntroState {
     displayTitle: boolean,
@@ -13,14 +14,14 @@ interface IntroState {
     emitter: EventEmitter
 }
 
-export class Intro extends Component<{}, IntroState> {
+export class Intro extends Component<IEmitterProps, IntroState> {
     constructor(props: any) {
         super(props);
         this.state = {
             displayTitle: true,
             displayOwner: false,
             ownerDialogueNumber: 0,
-            emitter: new EventEmitter()
+            emitter: this.props.globalEmitter
         };
 
         this.startOwnerDialogue = this.startOwnerDialogue.bind(this);
@@ -76,7 +77,7 @@ export class Intro extends Component<{}, IntroState> {
             },
     () => {
                 this.state.emitter.emit(INTRO_FINISHED);
-                this.state.emitter.removeAllListeners();
+                this.state.emitter.removeAllListeners(PROGRESS_DIALOGUE);
             })
         } else {
             if (ownerDialogueNumber === 0) {

@@ -2,27 +2,23 @@ import {EventEmitter} from "fbemitter";
 import React, { Component } from 'react';
 import './App.css';
 import {CHAPTER_ONE_INTRO_FINISHED, PROGRESS_DIALOGUE} from './Constants';
-import {CHAPTER_ONE_INTRO_TEXT, Owner} from "./Owner";
+import {IEmitterProps} from "./IEmitterProps";
 import {IntroBackgroundDoor} from "./IntroBackgroundDoor";
+import {CHAPTER_ONE_INTRO_TEXT, Owner} from "./Owner";
 
 interface ChapterOneIntroState {
-    displayTitle: boolean,
-    displayOwner: boolean,
     ownerDialogueNumber: number
     emitter: EventEmitter
 }
 
-export class ChapterOneIntro extends Component<{}, ChapterOneIntroState> {
+export class ChapterOneIntro extends Component<IEmitterProps, ChapterOneIntroState> {
     constructor(props: any) {
         super(props);
         this.state = {
-            displayTitle: true,
-            displayOwner: false,
             ownerDialogueNumber: 0,
-            emitter: new EventEmitter()
+            emitter: this.props.globalEmitter
         };
 
-        this.startOwnerDialogue = this.startOwnerDialogue.bind(this);
         this.progressOwnerDialogue = this.progressOwnerDialogue.bind(this);
 
         this.state.emitter.addListener(PROGRESS_DIALOGUE, this.progressOwnerDialogue)
@@ -39,7 +35,7 @@ export class ChapterOneIntro extends Component<{}, ChapterOneIntroState> {
                     <div className="owner">
                         <Owner speech={CHAPTER_ONE_INTRO_TEXT[this.state.ownerDialogueNumber]}/>
                     </div>
-                    <div className="restaurant">
+                    <div className="door">
                         <IntroBackgroundDoor/>
                     </div>
                 </div>
@@ -47,20 +43,11 @@ export class ChapterOneIntro extends Component<{}, ChapterOneIntroState> {
         );
     }
 
-    private startOwnerDialogue() {
-        this.state.emitter.emit(PROGRESS_DIALOGUE, 0);
-    }
-
     private progressOwnerDialogue(ownerDialogueNumber: number) {
         // If we have reached the end of the Owners dialogue then end the introduction
         if (ownerDialogueNumber === CHAPTER_ONE_INTRO_TEXT.length) {
-            this.setState({
-                displayOwner: false
-            },
-    () => {
-                this.state.emitter.emit(CHAPTER_ONE_INTRO_FINISHED);
-                this.state.emitter.removeAllListeners();
-            })
+            this.state.emitter.emit(CHAPTER_ONE_INTRO_FINISHED);
+            this.state.emitter.removeAllListeners(PROGRESS_DIALOGUE);
         } else {
             this.setState({
                 ownerDialogueNumber: ownerDialogueNumber

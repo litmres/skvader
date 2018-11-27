@@ -1,3 +1,4 @@
+import {createHash} from "crypto";
 import React, {Component} from "react";
 
 /**
@@ -53,7 +54,8 @@ export class IntroBackgroundDoor extends Component{
 
     render() {
         let itemsList = this.asciiBackgroundRestaurant.map(function(item){
-            return <span>{item}<br/></span>;
+            const data = createHash('md5').update(item, 'ascii');
+            return <span key={data.digest('hex')}>{item}<br/></span>;
         });
         return <pre>{ itemsList }</pre>
     }
