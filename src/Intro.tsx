@@ -89,7 +89,6 @@ export class Intro extends Component<{}, IntroState> {
                 })
             }
             setTimeout(() => {
-                console.log('ownerDialogueNumber', ownerDialogueNumber);
                 this.state.emitter.emit(PROGRESS_DIALOGUE, ++ownerDialogueNumber);
             }, 7000)
         }
