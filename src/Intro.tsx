@@ -4,6 +4,7 @@ import './App.css';
 import {INTRO_FINISHED, PROGRESS_DIALOGUE, TITLE_FINISHED} from './Constants';
 import {INTRO_SPEECH_TEXT, Owner} from "./Owner";
 import {Title} from "./Title";
+import {IntroBackgroundRestaurant} from "./IntroBackgroundRestaurant";
 
 interface IntroState {
     displayTitle: boolean,
@@ -45,7 +46,16 @@ export class Intro extends Component<{}, IntroState> {
         if (this.state.displayTitle) {
             display = <Title />;
         } else if (this.state.displayOwner) {
-            display = <Owner speech={INTRO_SPEECH_TEXT[this.state.ownerDialogueNumber]}/>;
+            display = (
+                <div className="intro-owner-and-restaurant">
+                    <div className="owner">
+                        <Owner speech={INTRO_SPEECH_TEXT[this.state.ownerDialogueNumber]}/>
+                    </div>
+                    <div className="restaurant">
+                        <IntroBackgroundRestaurant/>
+                    </div>
+                </div>
+            );
         }
         return (
             <div className="Intro">
