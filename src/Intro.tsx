@@ -27,7 +27,7 @@ export class Intro extends Component<{}, IntroState> {
         this.progressOwnerDialogue = this.progressOwnerDialogue.bind(this);
 
         this.state.emitter.once(TITLE_FINISHED, this.startOwnerDialogue);
-        this.state.emitter.addListener(PROGRESS_DIALOGUE, this.progressOwnerDialogue)
+        this.state.emitter.addListener(PROGRESS_DIALOGUE, this.progressOwnerDialogue);
     }
 
     componentDidMount() {

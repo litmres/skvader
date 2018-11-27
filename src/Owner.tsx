@@ -1,5 +1,5 @@
+import {createHash} from "crypto";
 import React, {Component} from "react";
-
 interface TextStateProps { speech :  string[] }
 
 /**
@@ -59,7 +59,8 @@ export class Owner extends Component<TextStateProps>{
         let template = Array.from(this.asciiOwner);
         this.addSpeechText(template, this.props.speech);
         let itemsList = template.map(function(item){
-            return <span>{item}<br/></span>;
+            const data = createHash('md5').update(item, 'ascii');
+            return <span key={data.digest('hex')}>{item}<br/></span>;
         });
         return <pre>{ itemsList }</pre>
     }

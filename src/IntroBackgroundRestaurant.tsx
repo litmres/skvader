@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import {createHash} from "crypto";
 
 /**
  * Original Ascii art by Art by Joan G. Stark: https://www.asciiart.eu/buildings-and-places/houses
@@ -41,7 +42,8 @@ export class IntroBackgroundRestaurant extends Component{
 
     render() {
         let itemsList = this.asciiBackgroundRestaurant.map(function(item){
-            return <span>{item}<br/></span>;
+            const data = createHash('md5').update(item, 'ascii');
+            return <span key={data.digest('hex')}>{item}<br/></span>;
         });
         return <pre>{ itemsList }</pre>
     }
