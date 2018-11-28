@@ -13,7 +13,7 @@ export class Map {
     }
 
     canSeePast(x: number, y: number): boolean {
-        let tile: Tile = this.tiles[x][y];
+        let tile: Tile = this.tiles[y][x];
         return tile.isTransparent();
     }
 
