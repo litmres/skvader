@@ -7,4 +7,7 @@ export const PROGRESS_DIALOGUE: string = "progress-dialogue";
 export const INTRO_FINISHED: string = "intro-finished";
 export const CHAPTER_ONE_INTRO_FINISHED: string = "chapter_one_intro-finished";
 export const START_GAME: string = "start-game";
-export const TUTORIAL: string = "tutorial";
+
+// Game Constants
+export const BACKGROUND_DEFAULT_COLOR: string = "#000";
+export const FOREGROUND_DEFAULT_COLOR: string = "#FFF";

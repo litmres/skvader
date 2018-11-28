@@ -1,11 +1,12 @@
 import {EventEmitter} from 'fbemitter';
 import React, {Component} from 'react';
 import './App.css';
-import {CHAPTER_ONE_INTRO_FINISHED, INTRO_FINISHED, START_GAME, TUTORIAL} from "./Constants";
-import {Game} from './Game';
-import {Intro} from './Intro';
 import {ChapterOneIntro} from "./ChapterOneIntro";
+import {CHAPTER_ONE_INTRO_FINISHED, INTRO_FINISHED, START_GAME} from "./Constants";
+import {Game} from './Game';
 import {GameDisplay} from "./GameDisplay";
+import {Intro} from './Intro';
+import {Level} from './Level';
 
 interface GameState {
     game: Game,
@@ -36,16 +37,17 @@ class App extends Component<{}, GameState> {
 
     render() {
         let display;
-        if (this.state.isIntroFinished && ! this.state.isChapterOneIntroFinished) {
+        /*if (this.state.isIntroFinished && ! this.state.isChapterOneIntroFinished) {
             display = <ChapterOneIntro globalEmitter={this.state.emitter}/>
-        } else if (this.state.isIntroFinished && this.state.isChapterOneIntroFinished) {
+        } else if (this.state.isIntroFinished && this.state.isChapterOneIntroFinished) {*/
             display = <GameDisplay/>;
+            // TODO figure out a better way to ensure that the HTML element exists before starting the game
             setTimeout(() => {
-                this.state.emitter.emit(START_GAME, TUTORIAL);
+                this.state.emitter.emit(START_GAME, Level.CHAPTER_ONE);
             }, 500);
-        } else {
+        /*} else {
             display = <Intro globalEmitter={this.state.emitter}/>
-        }
+        }*/
         return (
             <div className="App">
                 {display}
@@ -65,11 +67,10 @@ class App extends Component<{}, GameState> {
         })
     }
 
-    private handleCreatingNewGame(context: string) {
-        if (context === TUTORIAL) {
-            this.state.game.newGame();
-        } else {
-            this.state.game.newGame();
+    private handleCreatingNewGame(level: Level): void {
+        switch (level) {
+            default:
+                this.state.game.newGame(level);
         }
     }
 }
