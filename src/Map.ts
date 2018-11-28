@@ -18,15 +18,15 @@ export class Map {
     }
 
     canPass(x: number, y: number): boolean {
-        return this.tiles[x][y].canBePassed();
+        return this.tiles[y][x].canBePassed();
     }
 
     getTile(x: number, y: number): Tile {
-        return this.tiles[x][y];
+        return this.tiles[y][x];
     }
 
     updateTile(x: number, y: number, tile: Tile): void {
-        this.tiles[x][y] = tile;
+        this.tiles[y][x] = tile;
     }
 
     applyDarkness(): void {
