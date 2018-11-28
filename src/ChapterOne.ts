@@ -1,21 +1,35 @@
-import {Display} from "rot-js";
+import {Display, FOV} from "rot-js";
 import {IGameEngine} from "./IGameEngine";
 import {Map} from "./Map";
-import {Tile} from "./Tile";
 import {StaticMapGenerator} from "./StaticMapGenerator";
+import {Player} from "./Player";
 
 export class ChapterOne implements IGameEngine{
     private readonly display: Display;
+    private readonly fov: FOV;
+    private readonly player: Player;
     private readonly map: Map;
-    private readonly discoveredMap: Tile[] = [];
+    private readonly discoveredMap: Map;
 
     constructor(_display: Display) {
         this.display = _display;
-        this.map = StaticMapGenerator.construct(this.staticMap);
+        let result = StaticMapGenerator.construct(this.staticMap);
+        this.player = result.player;
+        this.map = result.map;
+        this.fov = new FOV.RecursiveShadowcasting(this.map.canSeePast);
+        this.discoveredMap = StaticMapGenerator.constructInitialBlankMap(this.staticMap);
     }
 
     start(): void {
-        this.map.draw(this.display);
+        this.updatePlayersFieldOfView();
+        this.discoveredMap.draw(this.display);
+    }
+
+    private updatePlayersFieldOfView(): void {
+        this.discoveredMap.applyDarkness();
+        /*this.fov.compute(this.player.getX(), this.player.getY(), this.player.getVision(), (x: number, y: number, R: number, visibility: number) => {
+            this.discoveredMap.updateTile(x, y, this.map.getTile(x, y));
+        })*/
     }
 
     private readonly staticMap: string[][] = [

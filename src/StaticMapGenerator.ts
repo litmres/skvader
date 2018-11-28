@@ -5,22 +5,37 @@ import {TileFactory, TileType} from "./TileFactory";
 import {Tile} from "./Tile";
 
 export class StaticMapGenerator {
-    static construct(staticMapStructure: string[][]): Map {
+    static construct(staticMapStructure: string[][]): {map: Map, player: Player} {
         const tiles: Tile[][] = new Array<Tile[]>(staticMapStructure.length);
-        for(let x = 0; x < staticMapStructure.length; x++) {
-            tiles[x] = new Array<Tile>(staticMapStructure[x].length);
-            for(let y = 0; y < staticMapStructure[x].length; y++) {
-                tiles[x][y] = new Tile(y, x, this.symbolToActorMap(staticMapStructure[x][y]));
+        let player: Player = new Player(0, 0, "@");
+        for(let i = 0; i < staticMapStructure.length; i++) {
+            tiles[i] = new Array<Tile>(staticMapStructure[i].length);
+            for(let j = 0; j < staticMapStructure[i].length; j++) {
+                let actor: Actor = this.symbolToActorMap(staticMapStructure[i][j], j, i);
+                tiles[i][j] = new Tile(j, i, actor);
+                if (actor instanceof Player) {
+                    player = actor;
+                }
             }
         }
-        console.log(tiles);
+        return {map: new Map(tiles), player };
+    }
+
+    static constructInitialBlankMap(staticMapStructure: string[][]): Map {
+        const tiles: Tile[][] = new Array<Tile[]>(staticMapStructure.length);
+        for(let i = 0; i < staticMapStructure.length; i++) {
+            tiles[i] = new Array<Tile>(staticMapStructure[i].length);
+            for(let j = 0; j < staticMapStructure[i].length; j++) {
+                tiles[i][j] = new Tile(j, i, TileFactory.createTile(TileType.VOID));
+            }
+        }
         return new Map(tiles);
     }
 
-    private static symbolToActorMap(symbol: string): Actor {
+    private static symbolToActorMap(symbol: string, x: number, y: number): Actor {
         switch (symbol) {
             case "@":
-                return new Player(symbol);
+                return new Player(x, y, symbol);
             case "#":
                 return TileFactory.createTile(TileType.WALL);
             case ".":

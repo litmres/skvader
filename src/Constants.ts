@@ -11,3 +11,8 @@ export const START_GAME: string = "start-game";
 // Game Constants
 export const BACKGROUND_DEFAULT_COLOR: string = "#000";
 export const FOREGROUND_DEFAULT_COLOR: string = "#FFF";
+export const PLAYERS_DEFAULT_VISION: number = 5;
+export const OPAQUE: boolean = false;
+export const TRANSPARENT: boolean = true;
+export const PASSABLE: boolean = true;
+export const NOT_PASSABLE: boolean = false;

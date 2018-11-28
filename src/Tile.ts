@@ -16,4 +16,16 @@ export class Tile {
     draw(display: Display) {
         display.draw(this.x, this.y, this.actor.symbol, this.actor.foregroundColor, this.actor.backgroundColor);
     }
+
+    isTransparent(): boolean {
+        return this.actor.transparent;
+    }
+
+    canBePassed(): boolean {
+        return this.actor.passable;
+    }
+
+    displayAsOutOfVision(): Tile {
+        return new Tile(this.x, this.y, new Actor(this.actor.symbol, this.isTransparent(), this.canBePassed(), "#5d5d5d", this.actor.backgroundColor));
+    }
 }

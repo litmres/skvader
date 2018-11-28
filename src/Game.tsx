@@ -1,21 +1,17 @@
 import {Display} from 'rot-js';
 import {DISPLAY_HEIGHT, DISPLAY_WIDTH} from './Constants';
 import {Level} from "./Level";
-import {Player} from "./Player";
 import {IGameEngine} from "./IGameEngine";
 import {ChapterOne} from "./ChapterOne";
 
 export class Game {
     private readonly display: Display;
-    private readonly player: Player;
 
     constructor() {
         this.display = new Display({
             width: DISPLAY_WIDTH,
             height: DISPLAY_HEIGHT
         });
-        this.player = new Player("@");
-
     }
 
     newGame(level: Level) {
@@ -34,9 +30,5 @@ export class Game {
                 gameEngine = new ChapterOne(this.display);
         }
         gameEngine.start();
-    }
-
-    getPlayer(): Player {
-        return this.player;
     }
 }
