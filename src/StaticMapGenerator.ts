@@ -5,20 +5,16 @@ import {TileFactory, TileType} from "./TileFactory";
 import {Tile} from "./Tile";
 
 export class StaticMapGenerator {
-    static construct(staticMapStructure: string[][]): {map: Map, player: Player} {
+    static construct(staticMapStructure: string[][]): Map {
         const tiles: Tile[][] = new Array<Tile[]>(staticMapStructure.length);
-        let player: Player = new Player(0, 0, "@");
         for(let i = 0; i < staticMapStructure.length; i++) {
             tiles[i] = new Array<Tile>(staticMapStructure[i].length);
             for(let j = 0; j < staticMapStructure[i].length; j++) {
-                let actor: Actor = this.symbolToActorMap(staticMapStructure[i][j], j, i);
-                tiles[i][j] = new Tile(j, i, actor);
-                if (actor instanceof Player) {
-                    player = actor;
-                }
+                tiles[i][j] = new Tile(j, i, this.symbolToActorMap(staticMapStructure[i][j], j, i));
             }
         }
-        return {map: new Map(tiles), player };
+
+        return new Map(tiles);
     }
 
     static constructInitialBlankMap(staticMapStructure: string[][]): Map {
@@ -32,10 +28,21 @@ export class StaticMapGenerator {
         return new Map(tiles);
     }
 
+    static discoverPlayersStartingCoordinates(staticMapStructure: string[][]): {x: number, y: number} {
+        for(let i = 0; i < staticMapStructure.length; i++) {
+            for(let j = 0; j < staticMapStructure[i].length; j++) {
+                if (staticMapStructure[i][j] === "@") {
+                    return {x: j, y: i};
+                }
+            }
+        }
+        return {x: 0,y:0};
+    };
+
     private static symbolToActorMap(symbol: string, x: number, y: number): Actor {
         switch (symbol) {
             case "@":
-                return new Player(x, y, symbol);
+                return TileFactory.createTile(TileType.EMPTY);
             case "#":
                 return TileFactory.createTile(TileType.WALL);
             case ".":
