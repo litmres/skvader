@@ -16,7 +16,7 @@ export class ChapterOne implements IGameEngine{
         let result = StaticMapGenerator.construct(this.staticMap);
         this.player = result.player;
         this.map = result.map;
-        this.fov = new FOV.RecursiveShadowcasting(this.map.canSeePast);
+        this.fov = new FOV.RecursiveShadowcasting(this.map.canSeePast.bind(this.map));
         this.discoveredMap = StaticMapGenerator.constructInitialBlankMap(this.staticMap);
     }
 
@@ -27,9 +27,9 @@ export class ChapterOne implements IGameEngine{
 
     private updatePlayersFieldOfView(): void {
         this.discoveredMap.applyDarkness();
-        /*this.fov.compute(this.player.getX(), this.player.getY(), this.player.getVision(), (x: number, y: number, R: number, visibility: number) => {
+        this.fov.compute(this.player.getX(), this.player.getY(), this.player.getVision(), (x: number, y: number, R: number, visibility: number) => {
             this.discoveredMap.updateTile(x, y, this.map.getTile(x, y));
-        })*/
+        })
     }
 
     private readonly staticMap: string[][] = [
