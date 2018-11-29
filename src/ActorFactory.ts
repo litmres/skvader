@@ -23,7 +23,7 @@ export class ActorFactory {
             case TileType.CRATE:
                 return new Actor("%", TRANSPARENT, NOT_PASSABLE,"#9c7905", "#000");
             case TileType.CRATE_DESTROYED:
-                return new Actor("^", TRANSPARENT, PASSABLE,"#FFF", "#000");
+                return new Actor("*", TRANSPARENT, PASSABLE,"#8f8f8f", "#000");
             case TileType.PAIRING_KNIFE:
                 return new Actor("k", TRANSPARENT, PASSABLE,"#a7a7a7", "#494c1b");
             case TileType.POTATO_PEELER:
