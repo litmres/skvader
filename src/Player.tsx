@@ -1,5 +1,6 @@
 import {
-    BACKGROUND_DEFAULT_COLOR, FINISHED_PLAYERS_TURN,
+    BACKGROUND_DEFAULT_COLOR,
+    FINISHED_PLAYERS_TURN,
     FOREGROUND_DEFAULT_COLOR,
     PLAYERS_DEFAULT_VISION,
     START_PLAYERS_TURN
@@ -9,6 +10,9 @@ import {Map} from "./Map";
 import {EventEmitter} from "fbemitter";
 import {TileFactory, TileType} from "./TileFactory";
 import {Tile} from "./Tile";
+import {DIRS} from "rot-js";
+import {Game} from "./Game";
+import {Actor} from "./Actor";
 
 export interface ICharacter {
     act(): void;
@@ -82,6 +86,17 @@ export class Player extends KeyboardInputDrivenActor implements ICharacter {
     }
 
     performAction(): void {
+        let dirs = DIRS[4];
+        for(let dir in dirs) {
+            let newX = this.x + dirs[dir][0];
+            let newY = this.y + dirs[dir][1];
+            console.log(this.map.getTile(newX, newY));
+            let actor: Actor = this.map.getTile(newX, newY).getActor();
+            if (actor.symbol === "+") {
+                this.map.updateTile(newX, newY, new Tile(newX, newY,TileFactory.createTile(TileType.DOOR_OPEN)));
+            }
+        }
+        this.gameEventsEmitter.emit(FINISHED_PLAYERS_TURN);
     }
 
     private performMove(newX: number, newY: number): void {

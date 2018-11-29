@@ -28,4 +28,8 @@ export class Tile {
     displayAsOutOfVision(): Tile {
         return new Tile(this.x, this.y, new Actor(this.actor.symbol, this.isTransparent(), this.canBePassed(), "#5d5d5d", this.actor.backgroundColor));
     }
+
+    getActor(): Actor {
+        return this.actor;
+    }
 }
