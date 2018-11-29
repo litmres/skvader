@@ -1,7 +1,7 @@
 import {EventEmitter} from "fbemitter";
-import {Display, Engine, FOV, Scheduler} from "rot-js";
+import {Display, Engine, Scheduler} from "rot-js";
 import {IGameEngine} from "./IGameEngine";
-import {Map} from "./Map";
+import {DungeonMap} from "./DungeonMap";
 import {StaticMapGenerator} from "./StaticMapGenerator";
 import {Player} from "./Player";
 import {
@@ -12,15 +12,17 @@ import {
     START_PLAYERS_TURN, USER_DISMISSED_TUTORIAL_MESSAGE
 } from "./Constants";
 import {Tile} from "./Tile";
+import {VisibleDungeonMap} from "./VisibleDungeonMap";
+import {ItemsMap} from "./ItemsMap";
 
 export class ChapterOne implements IGameEngine{
     private readonly appEventsEmitter: EventEmitter;
     private readonly gameEventsEmitter: EventEmitter;
     private readonly display: Display;
-    private readonly fov: FOV;
     private readonly player: Player;
-    private readonly map: Map;
-    private readonly discoveredMap: Map;
+    private readonly dungeonMap: DungeonMap;
+    private readonly itemsMap: ItemsMap;
+    private readonly visibleDungeonMap: VisibleDungeonMap;
     private readonly gameEngine: Engine;
     private tutorialProgress: number = 0;
 
@@ -31,12 +33,12 @@ export class ChapterOne implements IGameEngine{
         this.gameEventsEmitter.addListener(FINISHED_PLAYERS_TURN, this.handlePlayersTurnEnded.bind(this));
         this.appEventsEmitter.addListener(USER_DISMISSED_TUTORIAL_MESSAGE, this.giveControlBackToPlayer.bind(this));
         this.display = _display;
-        this.map = StaticMapGenerator.construct(this.staticMap);
-        this.fov = new FOV.RecursiveShadowcasting(this.map.canSeePast.bind(this.map));
-        this.discoveredMap = StaticMapGenerator.constructInitialBlankMap(this.staticMap);
-        let {x, y } = StaticMapGenerator.discoverPlayersStartingCoordinates(this.staticMap);
-        this.player = new Player(x, y, this.map, this.gameEventsEmitter);
-        this.map.updateTile(x, y, new Tile(x, y, this.player));
+        let {d, t, v} = StaticMapGenerator.construct(this.staticMap);
+        this.dungeonMap = d;
+        this.itemsMap = t;
+        this.visibleDungeonMap = v;
+        let {x, y} = StaticMapGenerator.discoverPlayersStartingCoordinates(this.staticMap);
+        this.player = new Player(x, y, this.visibleDungeonMap, this.gameEventsEmitter);
         let scheduler = new Scheduler.Simple();
         scheduler.add(this.player, PERSISTENT_ACTOR);
         this.gameEngine = new Engine(scheduler);
@@ -44,7 +46,7 @@ export class ChapterOne implements IGameEngine{
 
     start(): void {
         this.updatePlayersFieldOfView();
-        this.discoveredMap.draw(this.display);
+        this.visibleDungeonMap.draw(this.display);
         this.showTutorial();
     }
 
@@ -89,10 +91,13 @@ export class ChapterOne implements IGameEngine{
     }
 
     private updatePlayersFieldOfView(): void {
-        this.discoveredMap.applyDarkness();
-        this.fov.compute(this.player.getX(), this.player.getY(), this.player.getVision(), (x: number, y: number, R: number, visibility: number) => {
-            this.discoveredMap.updateTile(x, y, this.map.getTile(x, y));
-        });
+        this.visibleDungeonMap.applyDarkness();
+        const playerX: number = this.player.getX();
+        const playerY: number = this.player.getY();
+        const playerVision: number = this.player.getVision();
+        const visibleDungeonMap: Tile[] = this.dungeonMap.computeVisibleActors(playerX, playerY, playerVision);
+        const visibleItemsMap: Tile[] = this.itemsMap.computeVisibleActors(playerX, playerY, playerVision);
+        this.visibleDungeonMap.updateVisibleMap(this.player, visibleDungeonMap, visibleItemsMap);
     }
 
     private handlePlayersTurnStart() {
@@ -101,7 +106,7 @@ export class ChapterOne implements IGameEngine{
 
     private handlePlayersTurnEnded() {
         this.updatePlayersFieldOfView();
-        this.discoveredMap.draw(this.display);
+        this.visibleDungeonMap.draw(this.display);
         this.gameEngine.unlock();
         let x = this.player.getX();
         let y = this.player.getY();

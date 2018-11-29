@@ -1,8 +1,8 @@
 import {Actor} from "./Actor";
 import {NOT_PASSABLE, OPAQUE, PASSABLE, TRANSPARENT} from "./Constants";
 
-export class TileFactory {
-    static createTile(tileType: TileType): Actor {
+export class ActorFactory {
+    static createActor(tileType: TileType): Actor {
         switch (tileType) {
             case TileType.VOID:
                 return new Actor(" ", NOT_PASSABLE, OPAQUE, "#000", "#000");
@@ -21,7 +21,7 @@ export class TileFactory {
             case TileType.STAIRS_UP:
                 return new Actor("<", NOT_PASSABLE, OPAQUE,"#FFB6C1", "#000");
             default:
-                return TileFactory.createTile(TileType.VOID);
+                return ActorFactory.createActor(TileType.VOID);
         }
     }
 }

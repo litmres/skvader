@@ -6,12 +6,11 @@ import {
     START_PLAYERS_TURN
 } from "./Constants";
 import {KeyboardInputDrivenActor} from "./KeyboardInputDrivenActor";
-import {Map} from "./Map";
+import {DungeonMap} from "./DungeonMap";
 import {EventEmitter} from "fbemitter";
-import {TileFactory, TileType} from "./TileFactory";
+import {ActorFactory, TileType} from "./ActorFactory";
 import {Tile} from "./Tile";
 import {DIRS} from "rot-js";
-import {Game} from "./Game";
 import {Actor} from "./Actor";
 
 export interface ICharacter {
@@ -22,10 +21,10 @@ export class Player extends KeyboardInputDrivenActor implements ICharacter {
     private x: number;
     private y: number;
     private vision: number = PLAYERS_DEFAULT_VISION;
-    private readonly map: Map;
+    private readonly map: DungeonMap;
     private readonly gameEventsEmitter: EventEmitter;
 
-    constructor(_x: number, _y: number, _map: Map, _emitter: EventEmitter) {
+    constructor(_x: number, _y: number, _map: DungeonMap, _emitter: EventEmitter) {
         super("@", true, true, FOREGROUND_DEFAULT_COLOR, BACKGROUND_DEFAULT_COLOR);
         this.x = _x;
         this.y = _y;
@@ -90,18 +89,15 @@ export class Player extends KeyboardInputDrivenActor implements ICharacter {
         for(let dir in dirs) {
             let newX = this.x + dirs[dir][0];
             let newY = this.y + dirs[dir][1];
-            console.log(this.map.getTile(newX, newY));
-            let actor: Actor = this.map.getTile(newX, newY).getActor();
+            let actor: Actor = this.map.getActor(newX, newY);
             if (actor.symbol === "+") {
-                this.map.updateTile(newX, newY, new Tile(newX, newY,TileFactory.createTile(TileType.DOOR_OPEN)));
+                // this.map.updateVisibleMap(newX, newY, {x: newX, y: newY, actor: ActorFactory.createActor(TileType.DOOR_OPEN) } );
             }
         }
         this.gameEventsEmitter.emit(FINISHED_PLAYERS_TURN);
     }
 
     private performMove(newX: number, newY: number): void {
-        this.map.updateTile(this.x, this.y, new Tile(this.x, this.y, TileFactory.createTile(TileType.EMPTY)));
-        this.map.updateTile(newX, newY, new Tile(newX, newY, this));
         this.x = newX;
         this.y = newY;
         this.gameEventsEmitter.emit(FINISHED_PLAYERS_TURN);

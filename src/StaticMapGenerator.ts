@@ -1,31 +1,33 @@
-import {Map} from "./Map";
+import {DungeonMap} from "./DungeonMap";
 import {Actor} from "./Actor";
-import {Player} from "./Player";
-import {TileFactory, TileType} from "./TileFactory";
+import {ActorFactory, TileType} from "./ActorFactory";
 import {Tile} from "./Tile";
+import {ItemsMap} from "./ItemsMap";
+import {VisibleDungeonMap} from "./VisibleDungeonMap";
 
 export class StaticMapGenerator {
-    static construct(staticMapStructure: string[][]): Map {
-        const tiles: Tile[][] = new Array<Tile[]>(staticMapStructure.length);
+    static construct(staticMapStructure: string[][]): {d: DungeonMap, t: ItemsMap, v: VisibleDungeonMap} {
+        const d: Actor[][] = new Array<Actor[]>(staticMapStructure.length);
+        const v: Actor[][] = new Array<Actor[]>(staticMapStructure.length);
+        const t: Tile[] = new Array<Tile>();
+
         for(let i = 0; i < staticMapStructure.length; i++) {
-            tiles[i] = new Array<Tile>(staticMapStructure[i].length);
+            d[i] = new Array<Actor>(staticMapStructure[i].length);
+            v[i] = new Array<Actor>(staticMapStructure[i].length);
             for(let j = 0; j < staticMapStructure[i].length; j++) {
-                tiles[i][j] = new Tile(j, i, this.symbolToActorMap(staticMapStructure[i][j], j, i));
+                let actor = this.symbolToActorMap(staticMapStructure[i][j]);
+                // If there is an item at this coordinate then put an empty floor tile in the DungeonMap
+                if (actor instanceof Actor) {
+                    d[i][j] = actor;
+                } else {
+                    t.push({x: j, y: i, actor});
+                    d[i][j] = ActorFactory.createActor(TileType.EMPTY);
+                }
+                v[i][j] = ActorFactory.createActor(TileType.VOID);
             }
         }
 
-        return new Map(tiles);
-    }
-
-    static constructInitialBlankMap(staticMapStructure: string[][]): Map {
-        const tiles: Tile[][] = new Array<Tile[]>(staticMapStructure.length);
-        for(let i = 0; i < staticMapStructure.length; i++) {
-            tiles[i] = new Array<Tile>(staticMapStructure[i].length);
-            for(let j = 0; j < staticMapStructure[i].length; j++) {
-                tiles[i][j] = new Tile(j, i, TileFactory.createTile(TileType.VOID));
-            }
-        }
-        return new Map(tiles);
+        return {d: new DungeonMap(d), t: new ItemsMap(t), v: new VisibleDungeonMap(v)};
     }
 
     static discoverPlayersStartingCoordinates(staticMapStructure: string[][]): {x: number, y: number} {
@@ -39,28 +41,28 @@ export class StaticMapGenerator {
         return {x: 0,y:0};
     };
 
-    private static symbolToActorMap(symbol: string, x: number, y: number): Actor {
+    private static symbolToActorMap(symbol: string): Actor {
         switch (symbol) {
             case "@":
-                return TileFactory.createTile(TileType.EMPTY);
+                return ActorFactory.createActor(TileType.EMPTY);
             case "#":
-                return TileFactory.createTile(TileType.WALL);
+                return ActorFactory.createActor(TileType.WALL);
             case ".":
-                return TileFactory.createTile(TileType.EMPTY);
+                return ActorFactory.createActor(TileType.EMPTY);
             case "E":
-                return TileFactory.createTile(TileType.DOOR_EXIT);
+                return ActorFactory.createActor(TileType.DOOR_EXIT);
             case "+":
-                return TileFactory.createTile(TileType.DOOR_CLOSED);
+                return ActorFactory.createActor(TileType.DOOR_CLOSED);
             case "%":
-                return TileFactory.createTile(TileType.EMPTY);
+                return ActorFactory.createActor(TileType.EMPTY);
             case "k":
-                return TileFactory.createTile(TileType.EMPTY);
+                return ActorFactory.createActor(TileType.EMPTY);
             case "p":
-                return TileFactory.createTile(TileType.EMPTY);
+                return ActorFactory.createActor(TileType.EMPTY);
             case "v":
-                return TileFactory.createTile(TileType.EMPTY);
+                return ActorFactory.createActor(TileType.EMPTY);
             default:
-                return TileFactory.createTile(TileType.VOID);
+                return ActorFactory.createActor(TileType.VOID);
         }
     }
 }
