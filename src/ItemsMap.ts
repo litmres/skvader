@@ -45,14 +45,13 @@ export class ItemsMap implements IMap {
     }
 
     /**
-     * In the case of items to be displayed on the map - we want to return those items which are visible.
-     * The returned items can then be added to the visible dungeon map.
+     * For simplicity, check all the coordinates that would be in a visible range ignoring walls.
      *
      * @param x X coordinate of the item
      * @param y Y coordinate of the item
      */
     canSee(x: number, y: number): boolean {
-        return this.items.has(ItemsMap.asKey(x, y));
+        return true;
     }
 
     computeVisibleActors(x: number, y: number, vision: number): Tile[] {
