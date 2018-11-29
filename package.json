@@ -8,6 +8,7 @@
     "@types/fbemitter": "^2.0.32",
     "@types/jest": "23.3.9",
     "@types/react": "16.7.7",
+    "@types/react-bootstrap": "^0.32.14",
     "@types/react-dom": "16.0.10",
     "@types/rot-js": "^0.6.4",
     "fbemitter": "^2.1.1",

@@ -9,6 +9,10 @@ export const CHAPTER_ONE_INTRO_FINISHED: string = "chapter_one_intro-finished";
 export const START_GAME: string = "start-game";
 export const START_PLAYERS_TURN: string = "start-players-turn";
 export const FINISHED_PLAYERS_TURN: string = "finished-players-turn";
+export const DISPLAY_ZOOM_IN: string = "zoom-in";
+export const DISPLAY_ZOOM_OUT: string = "zoom-out";
+export const DISPLAY_TUTORIAL_MESSAGE: string = "disp-tut-msg";
+export const USER_DISMISSED_TUTORIAL_MESSAGE: string = "usr-dismissed-tut-msg";
 
 // Game Constants
 export const BACKGROUND_DEFAULT_COLOR: string = "#000";
@@ -20,3 +24,4 @@ export const PASSABLE: boolean = true;
 export const NOT_PASSABLE: boolean = false;
 export const PERSISTENT_ACTOR: boolean = true;
 export const TRANSIENT_ACTOR: boolean = false;
+export const DEFAULT_FONT_SIZE: number = 18;

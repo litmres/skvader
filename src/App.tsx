@@ -40,7 +40,7 @@ class App extends Component<{}, GameState> {
         /*if (this.state.isIntroFinished && ! this.state.isChapterOneIntroFinished) {
             display = <ChapterOneIntro globalEmitter={this.state.emitter}/>
         } else if (this.state.isIntroFinished && this.state.isChapterOneIntroFinished) {*/
-            display = <GameDisplay/>;
+            display = <GameDisplay globalEmitter={this.state.emitter}/>;
             // TODO figure out a better way to ensure that the HTML element exists before starting the game
             setTimeout(() => {
                 this.state.emitter.emit(START_GAME, Level.CHAPTER_ONE);
@@ -70,7 +70,7 @@ class App extends Component<{}, GameState> {
     private handleCreatingNewGame(level: Level): void {
         switch (level) {
             default:
-                this.state.game.newGame(level);
+                this.state.game.newGame(level, this.state.emitter);
         }
     }
 }
