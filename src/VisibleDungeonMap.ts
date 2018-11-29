@@ -3,8 +3,11 @@ import {Actor} from "./Actor";
 import {Display} from "rot-js";
 import {Tile} from "./Tile";
 import {Player} from "./Player";
+import {ItemsMap} from "./ItemsMap";
 
 export class VisibleDungeonMap extends DungeonMap {
+
+    private tempDiscoveredDungeon: Map<string, Actor> = new Map();
 
     constructor(_actors: Actor[][]) {
         super(_actors);
@@ -28,14 +31,40 @@ export class VisibleDungeonMap extends DungeonMap {
         }
     }
 
-    updateVisibleMap(player: Player, visibleDungeonMap: Tile[], visibleItemsMap: Tile[]): void {
-        visibleDungeonMap.forEach((t) => this.updateActors(t));
-        visibleItemsMap.forEach((t) => this.updateActors(t));
-        this.updateActors({x: player.getX(), y: player.getY(), actor: player});
+    /**
+     * Override the function used to calculate what the player can see to factor in for items.
+     *
+     * @param x
+     * @param y
+     */
+    canSeePast(x: number, y: number): boolean {
+        const actor = this.tempDiscoveredDungeon.get(ItemsMap.asKey(x, y));
+        return actor ? actor.transparent: false;
     }
 
-    private updateActors(tile: Tile): void {
-        let {x, y, actor} = tile;
-        this.actors[y][x] = actor;
+    updateVisibleMap(player: Player, visibleDungeonMap: Tile[], visibleItemsMap: Tile[]): void {
+        this.tempDiscoveredDungeon = new Map();
+
+        // First add the base dungeon
+        visibleDungeonMap.forEach((t) => this.updateTempDungeonMap(t));
+        // Next overlay the items on the visible base dungeon
+        visibleItemsMap.forEach((t) => this.updateTempDungeonMap(t));
+
+        const that = this;
+        const playerX = player.getX();
+        const playerY = player.getY();
+        this.fov.compute(playerX, playerY, player.getVision(), (x: number, y: number, R: number, visibility: number) => {
+            const actor = that.tempDiscoveredDungeon.get(ItemsMap.asKey(x, y));
+            if (actor) {
+                that.actors[y][x] = actor;
+            }
+        });
+
+        // Finally add the player to the visible dungeon map to be drawn.
+        this.actors[playerY][playerX] =  player;
+    }
+
+    private updateTempDungeonMap(tile: Tile) {
+        this.tempDiscoveredDungeon.set(ItemsMap.asKey(tile.x, tile.y), tile.actor);
     }
 }

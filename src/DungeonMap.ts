@@ -5,18 +5,22 @@ import {Tile} from "./Tile";
 
 export class DungeonMap implements IMap {
     protected readonly actors: Actor[][];
-    private readonly fov: FOV = new FOV.RecursiveShadowcasting(this.canSeePast.bind(this));
+    protected readonly fov: FOV = new FOV.RecursiveShadowcasting(this.canSeePast.bind(this));
 
     constructor(_actors: Actor[][]) {
         this.actors = _actors;
     }
 
     canSeePast(x: number, y: number): boolean {
-        return this.actors[y][x].transparent;
+        const actor: Actor = this.actors[y][x];
+        // Deals with the edge case where we sometimes can see a void / out of the dungeon (happens around the dungeon exit)
+        return actor ? actor.transparent : false;
     }
 
     canPass(x: number, y: number): boolean {
-        return this.actors[y][x].passable;
+        const actor: Actor = this.actors[y][x];
+        // Deals with the edge case where we sometimes can see a void / out of the dungeon (happens around the dungeon exit)
+        return actor ? actor.passable : false;
     }
 
     getActor(x: number, y: number): Actor {

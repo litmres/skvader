@@ -7,6 +7,7 @@ import {VisibleDungeonMap} from "./VisibleDungeonMap";
 import {EventEmitter} from "fbemitter";
 import {ClosedDungeonDoor} from "./ClosedDungeonDoor";
 import {DungeonExitDoor} from "./DungeonExitDoor";
+import {Interactable} from "./Interactable";
 
 export class StaticMapGenerator {
     static construct(staticMapStructure: string[][], emitter: EventEmitter): {d: DungeonMap, t: ItemsMap, v: VisibleDungeonMap} {
@@ -20,11 +21,11 @@ export class StaticMapGenerator {
             for(let j = 0; j < staticMapStructure[i].length; j++) {
                 let actor = this.symbolToActorMap(staticMapStructure[i][j], ItemsMap.asTuple(j, i), emitter);
                 // If there is an item at this coordinate then put an empty floor tile in the DungeonMap
-                if (actor instanceof Actor) {
-                    d[i][j] = actor;
-                } else {
+                if (actor instanceof Interactable) {
                     t.push({x: j, y: i, actor});
                     d[i][j] = ActorFactory.createActor(TileType.EMPTY);
+                } else {
+                    d[i][j] = actor;
                 }
                 v[i][j] = ActorFactory.createActor(TileType.VOID);
             }
