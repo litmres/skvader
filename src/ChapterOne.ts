@@ -5,6 +5,7 @@ import {DungeonMap} from "./DungeonMap";
 import {StaticMapGenerator} from "./StaticMapGenerator";
 import {Player} from "./Player";
 import {
+    CHAPTER_ONE_EXIT_INTERACTION, CHAPTER_ONE_FINISHED,
     DISPLAY_TUTORIAL_MESSAGE,
     DISPLAY_ZOOM_IN, DISPLAY_ZOOM_OUT,
     FINISHED_PLAYERS_TURN,
@@ -31,9 +32,10 @@ export class ChapterOne implements IGameEngine{
         this.gameEventsEmitter = new EventEmitter();
         this.gameEventsEmitter.addListener(START_PLAYERS_TURN, this.handlePlayersTurnStart.bind(this));
         this.gameEventsEmitter.addListener(FINISHED_PLAYERS_TURN, this.handlePlayersTurnEnded.bind(this));
+        this.gameEventsEmitter.addListener(CHAPTER_ONE_EXIT_INTERACTION, this.handleExitInteraction.bind(this));
         this.appEventsEmitter.addListener(USER_DISMISSED_TUTORIAL_MESSAGE, this.giveControlBackToPlayer.bind(this));
         this.display = _display;
-        let {d, t, v} = StaticMapGenerator.construct(this.staticMap);
+        let {d, t, v} = StaticMapGenerator.construct(this.staticMap, this.gameEventsEmitter);
         this.dungeonMap = d;
         this.itemsMap = t;
         this.visibleDungeonMap = v;
@@ -112,6 +114,16 @@ export class ChapterOne implements IGameEngine{
         let y = this.player.getY();
         if (this.tutorialProgress === 1 && (x === 9 && (y > 1 && y < 9)) || ((y === 1 || y === 9) && x === 10)) {
             return this.showTutorial();
+        }
+    }
+
+    private handleExitInteraction() {
+        if (this.tutorialProgress > 1) {
+            this.gameEventsEmitter.removeAllListeners(START_PLAYERS_TURN);
+            this.gameEventsEmitter.removeAllListeners(FINISHED_PLAYERS_TURN);
+            this.gameEventsEmitter.removeAllListeners(CHAPTER_ONE_EXIT_INTERACTION);
+            this.appEventsEmitter.removeAllListeners(USER_DISMISSED_TUTORIAL_MESSAGE);
+            this.appEventsEmitter.emit(CHAPTER_ONE_FINISHED);
         }
     }
 

@@ -1,3 +1,6 @@
+import {EventEmitter} from "fbemitter";
+import {DIRS} from "rot-js";
+import {Actor} from "./Actor";
 import {
     BACKGROUND_DEFAULT_COLOR,
     FINISHED_PLAYERS_TURN,
@@ -5,13 +8,9 @@ import {
     PLAYERS_DEFAULT_VISION,
     START_PLAYERS_TURN
 } from "./Constants";
-import {KeyboardInputDrivenActor} from "./KeyboardInputDrivenActor";
 import {DungeonMap} from "./DungeonMap";
-import {EventEmitter} from "fbemitter";
-import {ActorFactory, TileType} from "./ActorFactory";
-import {Tile} from "./Tile";
-import {DIRS} from "rot-js";
-import {Actor} from "./Actor";
+import {Interactable} from "./Interactable";
+import {KeyboardInputDrivenActor} from "./KeyboardInputDrivenActor";
 
 export interface ICharacter {
     act(): void;
@@ -86,15 +85,21 @@ export class Player extends KeyboardInputDrivenActor implements ICharacter {
 
     performAction(): void {
         let dirs = DIRS[4];
+        let interactionHappened = false;
+        // Currently the player will interact with multiple adjacent 'actors' in a turn if it is possible (a future enhancement might be to add keys to denote which action to take).
         for(let dir in dirs) {
             let newX = this.x + dirs[dir][0];
             let newY = this.y + dirs[dir][1];
             let actor: Actor = this.map.getActor(newX, newY);
-            if (actor.symbol === "+") {
-                // this.map.updateVisibleMap(newX, newY, {x: newX, y: newY, actor: ActorFactory.createActor(TileType.DOOR_OPEN) } );
+            if (actor instanceof Interactable) {
+                const item: Interactable = actor as Interactable;
+                item.interactWith();
+                interactionHappened = true;
             }
         }
-        this.gameEventsEmitter.emit(FINISHED_PLAYERS_TURN);
+        if (interactionHappened) {
+            this.gameEventsEmitter.emit(FINISHED_PLAYERS_TURN);
+        }
     }
 
     private performMove(newX: number, newY: number): void {

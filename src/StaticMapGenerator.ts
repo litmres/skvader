@@ -2,11 +2,14 @@ import {DungeonMap} from "./DungeonMap";
 import {Actor} from "./Actor";
 import {ActorFactory, TileType} from "./ActorFactory";
 import {Tile} from "./Tile";
-import {ItemsMap} from "./ItemsMap";
+import {ICoordinate, ItemsMap} from "./ItemsMap";
 import {VisibleDungeonMap} from "./VisibleDungeonMap";
+import {EventEmitter} from "fbemitter";
+import {ClosedDungeonDoor} from "./ClosedDungeonDoor";
+import {DungeonExitDoor} from "./DungeonExitDoor";
 
 export class StaticMapGenerator {
-    static construct(staticMapStructure: string[][]): {d: DungeonMap, t: ItemsMap, v: VisibleDungeonMap} {
+    static construct(staticMapStructure: string[][], emitter: EventEmitter): {d: DungeonMap, t: ItemsMap, v: VisibleDungeonMap} {
         const d: Actor[][] = new Array<Actor[]>(staticMapStructure.length);
         const v: Actor[][] = new Array<Actor[]>(staticMapStructure.length);
         const t: Tile[] = new Array<Tile>();
@@ -15,7 +18,7 @@ export class StaticMapGenerator {
             d[i] = new Array<Actor>(staticMapStructure[i].length);
             v[i] = new Array<Actor>(staticMapStructure[i].length);
             for(let j = 0; j < staticMapStructure[i].length; j++) {
-                let actor = this.symbolToActorMap(staticMapStructure[i][j]);
+                let actor = this.symbolToActorMap(staticMapStructure[i][j], ItemsMap.asTuple(j, i), emitter);
                 // If there is an item at this coordinate then put an empty floor tile in the DungeonMap
                 if (actor instanceof Actor) {
                     d[i][j] = actor;
@@ -27,10 +30,10 @@ export class StaticMapGenerator {
             }
         }
 
-        return {d: new DungeonMap(d), t: new ItemsMap(t), v: new VisibleDungeonMap(v)};
+        return {d: new DungeonMap(d), t: new ItemsMap(t, emitter), v: new VisibleDungeonMap(v)};
     }
 
-    static discoverPlayersStartingCoordinates(staticMapStructure: string[][]): {x: number, y: number} {
+    static discoverPlayersStartingCoordinates(staticMapStructure: string[][]): ICoordinate {
         for(let i = 0; i < staticMapStructure.length; i++) {
             for(let j = 0; j < staticMapStructure[i].length; j++) {
                 if (staticMapStructure[i][j] === "@") {
@@ -41,7 +44,7 @@ export class StaticMapGenerator {
         return {x: 0,y:0};
     };
 
-    private static symbolToActorMap(symbol: string): Actor {
+    private static symbolToActorMap(symbol: string, location: ICoordinate, emitter: EventEmitter): Actor {
         switch (symbol) {
             case "@":
                 return ActorFactory.createActor(TileType.EMPTY);
@@ -50,9 +53,9 @@ export class StaticMapGenerator {
             case ".":
                 return ActorFactory.createActor(TileType.EMPTY);
             case "E":
-                return ActorFactory.createActor(TileType.DOOR_EXIT);
+                return new DungeonExitDoor(location.x, location.y, emitter, "Dungeon Exit");
             case "+":
-                return ActorFactory.createActor(TileType.DOOR_CLOSED);
+                return new ClosedDungeonDoor(location.x, location.y, emitter);
             case "%":
                 return ActorFactory.createActor(TileType.EMPTY);
             case "k":

@@ -3,6 +3,8 @@ import {IMap} from "./IMap";
 import {Tile} from "./Tile";
 import {ActorFactory, TileType} from "./ActorFactory";
 import {FOV} from "rot-js";
+import {EventEmitter} from "fbemitter";
+import {ITEM_INTERACTION_HAPPENED} from "./Constants";
 
 export interface ICoordinate {
     x: number,
@@ -12,8 +14,11 @@ export interface ICoordinate {
 export class ItemsMap implements IMap {
     private readonly items: Map<ICoordinate, Actor> = new Map();
     private readonly fov: FOV = new FOV.RecursiveShadowcasting(this.canSeePast.bind(this));
+    private readonly gameEventsEmitter: EventEmitter;
 
-    constructor(_items: Tile[]) {
+    constructor(_items: Tile[], _emitter: EventEmitter) {
+        this.gameEventsEmitter = _emitter;
+        this.gameEventsEmitter.addListener(ITEM_INTERACTION_HAPPENED, this.updateItem.bind(this));
         _items.forEach((item: Tile) => this.items.set(ItemsMap.asTuple(item.x, item.y), item.actor));
     }
 
@@ -43,5 +48,9 @@ export class ItemsMap implements IMap {
             }
         });
         return tiles;
+    }
+
+    private updateItem(item: Tile) {
+        this.items.set(ItemsMap.asTuple(item.x, item.y), item.actor);
     }
 }

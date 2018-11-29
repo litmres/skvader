@@ -3,9 +3,10 @@ import React, {Component} from "react"
 import {Button, Modal} from "react-bootstrap";
 import {IEmitterProps} from "./IEmitterProps";
 import {
+    CHAPTER_ONE_FINISHED,
     DISPLAY_TUTORIAL_MESSAGE,
     DISPLAY_ZOOM_IN,
-    DISPLAY_ZOOM_OUT,
+    DISPLAY_ZOOM_OUT, START_CHAPTER_TWO_DIALOGUE,
     USER_DISMISSED_TUTORIAL_MESSAGE
 } from "./Constants";
 
@@ -33,10 +34,12 @@ export class GameDisplay extends Component<IEmitterProps, GameDisplayState> {
         this.handleResetZoom = this.handleResetZoom.bind(this);
         this.handleShowModal = this.handleShowModal.bind(this);
         this.handleCloseModal = this.handleCloseModal.bind(this);
+        this.handleLevelCompleted = this.handleLevelCompleted.bind(this);
 
         this.state.emitter.addListener(DISPLAY_ZOOM_IN, this.handleZoomIn);
         this.state.emitter.addListener(DISPLAY_ZOOM_OUT, this.handleResetZoom);
         this.state.emitter.addListener(DISPLAY_TUTORIAL_MESSAGE, this.handleShowModal);
+        this.state.emitter.addListener(CHAPTER_ONE_FINISHED, this.handleLevelCompleted);
     }
 
     render() {
@@ -85,6 +88,19 @@ export class GameDisplay extends Component<IEmitterProps, GameDisplayState> {
             showModal: false,
             modalTitle: "",
             modalBody: ""
+        });
+    }
+
+    private handleLevelCompleted() {
+        console.log("about to finish")
+        this.state.emitter.removeAllListeners(DISPLAY_ZOOM_IN);
+        this.state.emitter.removeAllListeners(DISPLAY_ZOOM_OUT);
+        this.state.emitter.removeAllListeners(DISPLAY_TUTORIAL_MESSAGE);
+        this.state.emitter.removeAllListeners(CHAPTER_ONE_FINISHED);
+        this.setState({
+            displayClass: "Level-completed"
+        }, () => {
+            setTimeout(() => this.state.emitter.emit(START_CHAPTER_TWO_DIALOGUE), 1000);
         });
     }
 }
