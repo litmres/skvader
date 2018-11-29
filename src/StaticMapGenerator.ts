@@ -8,6 +8,8 @@ import {EventEmitter} from "fbemitter";
 import {ClosedDungeonDoor} from "./ClosedDungeonDoor";
 import {DungeonExitDoor} from "./DungeonExitDoor";
 import {Interactable} from "./Interactable";
+import {DestructableCrate} from "./DestructableCrate";
+import {CollectableItem} from "./CollectableItem";
 
 export class StaticMapGenerator {
     static construct(staticMapStructure: string[][], emitter: EventEmitter): {d: DungeonMap, t: ItemsMap, v: VisibleDungeonMap} {
@@ -58,11 +60,15 @@ export class StaticMapGenerator {
             case "+":
                 return new ClosedDungeonDoor(location.x, location.y, emitter);
             case "%":
-                return ActorFactory.createActor(TileType.EMPTY);
+                return new DestructableCrate(ActorFactory.createActor(TileType.CRATE_DESTROYED), location.x, location.y, emitter);
             case "k":
-                return ActorFactory.createActor(TileType.EMPTY);
+                return new DestructableCrate(
+                    new CollectableItem(ActorFactory.createActor(TileType.PAIRING_KNIFE), ActorFactory.createActor(TileType.CRATE_DESTROYED), location.x, location.y, emitter),
+                    location.x, location.y, emitter);
             case "p":
-                return ActorFactory.createActor(TileType.EMPTY);
+                return new DestructableCrate(
+                    new CollectableItem(ActorFactory.createActor(TileType.POTATO_PEELER), ActorFactory.createActor(TileType.CRATE_DESTROYED), location.x, location.y, emitter),
+                    location.x, location.y, emitter);
             case "v":
                 return ActorFactory.createActor(TileType.EMPTY);
             default:

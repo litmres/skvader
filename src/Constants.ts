@@ -17,6 +17,7 @@ export const DISPLAY_ZOOM_OUT: string = "zoom-out";
 export const DISPLAY_TUTORIAL_MESSAGE: string = "disp-tut-msg";
 export const USER_DISMISSED_TUTORIAL_MESSAGE: string = "usr-dismissed-tut-msg";
 export const ITEM_INTERACTION_HAPPENED: string = "interaction-happened";
+export const ITEM_ADDED_TO_INVENTORY: string = "item-added-to-inventory";
 
 // Game Constants
 export const BACKGROUND_DEFAULT_COLOR: string = "#000";
