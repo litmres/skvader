@@ -66,7 +66,6 @@ export class GameDisplay extends Component<IEmitterProps, GameDisplayState> {
     }
 
     private handleResetZoom() {
-        console.log("reset zoom");
         this.setState({
             displayClass: ""
         });
@@ -81,7 +80,6 @@ export class GameDisplay extends Component<IEmitterProps, GameDisplayState> {
     }
 
     private handleCloseModal() {
-        console.log("dismissed")
         this.state.emitter.emit(USER_DISMISSED_TUTORIAL_MESSAGE);
         this.setState({
             showModal: false,

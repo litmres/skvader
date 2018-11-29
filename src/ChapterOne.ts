@@ -68,7 +68,6 @@ export class ChapterOne implements IGameEngine{
     }
 
     private giveControlBackToPlayer(): void {
-        console.log("giving back control...")
         if (this.tutorialProgress === 0) {
             this.gameEngine.start();
         }
