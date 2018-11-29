@@ -23,12 +23,12 @@ export class Player extends KeyboardInputDrivenActor implements ICharacter {
     private readonly map: DungeonMap;
     private readonly gameEventsEmitter: EventEmitter;
 
-    constructor(_x: number, _y: number, _map: DungeonMap, _emitter: EventEmitter) {
+    constructor(_x: number, _y: number, _map: DungeonMap, _gameEmitter: EventEmitter) {
         super("@", true, true, FOREGROUND_DEFAULT_COLOR, BACKGROUND_DEFAULT_COLOR);
         this.x = _x;
         this.y = _y;
         this.map = _map;
-        this.gameEventsEmitter = _emitter;
+        this.gameEventsEmitter = _gameEmitter;
     }
 
     act(): void {

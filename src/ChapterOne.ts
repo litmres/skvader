@@ -8,13 +8,14 @@ import {
     CHAPTER_ONE_EXIT_INTERACTION, CHAPTER_ONE_FINISHED,
     DISPLAY_TUTORIAL_MESSAGE,
     DISPLAY_ZOOM_IN, DISPLAY_ZOOM_OUT,
-    FINISHED_PLAYERS_TURN,
+    FINISHED_PLAYERS_TURN, ITEM_ADDED_TO_INVENTORY,
     PERSISTENT_ACTOR,
     START_PLAYERS_TURN, USER_DISMISSED_TUTORIAL_MESSAGE
 } from "./Constants";
 import {Tile} from "./Tile";
 import {VisibleDungeonMap} from "./VisibleDungeonMap";
 import {ItemsMap} from "./ItemsMap";
+import {Actor} from "./Actor";
 
 export class ChapterOne implements IGameEngine{
     private readonly appEventsEmitter: EventEmitter;
@@ -33,6 +34,7 @@ export class ChapterOne implements IGameEngine{
         this.gameEventsEmitter.addListener(START_PLAYERS_TURN, this.handlePlayersTurnStart.bind(this));
         this.gameEventsEmitter.addListener(FINISHED_PLAYERS_TURN, this.handlePlayersTurnEnded.bind(this));
         this.gameEventsEmitter.addListener(CHAPTER_ONE_EXIT_INTERACTION, this.handleExitInteraction.bind(this));
+        this.gameEventsEmitter.addListener(ITEM_ADDED_TO_INVENTORY, this.handleItemAdded.bind(this));
         this.appEventsEmitter.addListener(USER_DISMISSED_TUTORIAL_MESSAGE, this.giveControlBackToPlayer.bind(this));
         this.display = _display;
         let {d, t, v} = StaticMapGenerator.construct(this.staticMap, this.gameEventsEmitter);
@@ -80,6 +82,20 @@ export class ChapterOne implements IGameEngine{
                 "</div>"
             );
         } else if(this.tutorialProgress == 2) {
+            this.appEventsEmitter.emit(DISPLAY_ZOOM_IN);
+            this.appEventsEmitter.emit(DISPLAY_TUTORIAL_MESSAGE, "Loot crates 🗃️📦😲",
+                "<div className_='Tutorial-text'>" +
+                "<p><b>Look over there at the other side of the room a crate...</b></p>" +
+                "<p>Crates are represented by <span className='Fgbr-bgb Char'>%</span>s <i>e.g. the one at the end of this room.</i></p>" +
+                "<p>Destroyed crates are represented by <span className='Fgw-bgb Char'>*</span>s</p>" +
+                "<p>You can break open a crate by standing in front of it and pressing the <b>Space bar</b> or the <b>Return key</b></p>" +
+                "<br />" +
+                "<p>Sometimes crates will contain useful items that <b>can be picked up</b>...</p>" +
+                "<br />" +
+                "<p><b>Time to open that crate and find out what is inside of it!</b></p>" +
+                "</div>"
+            );
+        } else if(this.tutorialProgress == 3) {
 
         }
     }
@@ -114,6 +130,8 @@ export class ChapterOne implements IGameEngine{
         let y = this.player.getY();
         if (this.tutorialProgress === 1 && (x === 9 && (y > 1 && y < 9)) || ((y === 1 || y === 9) && x === 10)) {
             return this.showTutorial();
+        } else if (this.tutorialProgress === 2 && (x === 18 && (y > 1 && y < 9)) || ((y === 1 || y === 9) && x === 19)) {
+            return this.showTutorial();
         }
     }
 
@@ -125,6 +143,11 @@ export class ChapterOne implements IGameEngine{
             this.appEventsEmitter.removeAllListeners(USER_DISMISSED_TUTORIAL_MESSAGE);
             this.appEventsEmitter.emit(CHAPTER_ONE_FINISHED);
         }
+    }
+
+    private handleItemAdded(item: Actor) {
+        console.log("item: ", item);
+        this.appEventsEmitter.emit(ITEM_ADDED_TO_INVENTORY, item);
     }
 
     private readonly staticMap: string[][] = [
