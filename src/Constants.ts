@@ -18,6 +18,7 @@ export const DISPLAY_TUTORIAL_MESSAGE: string = "disp-tut-msg";
 export const USER_DISMISSED_TUTORIAL_MESSAGE: string = "usr-dismissed-tut-msg";
 export const ITEM_INTERACTION_HAPPENED: string = "interaction-happened";
 export const ITEM_ADDED_TO_INVENTORY: string = "item-added-to-inventory";
+export const DISPLAY_INVENTORY_ZOOM_IN: string = "zoom-in-on-inventory";
 
 // Game Constants
 export const BACKGROUND_DEFAULT_COLOR: string = "#000";
@@ -28,5 +29,4 @@ export const TRANSPARENT: boolean = true;
 export const PASSABLE: boolean = true;
 export const NOT_PASSABLE: boolean = false;
 export const PERSISTENT_ACTOR: boolean = true;
-export const TRANSIENT_ACTOR: boolean = false;
 export const DEFAULT_FONT_SIZE: number = 18;

@@ -2,19 +2,16 @@
     overflow: hidden;
 }
 
-.Page-header {
-    margin-bottom: 1px;
-}
-
 #Game-display {
     background: #000;
 }
 
 .Game-display-container {
     border-radius: 15px;
-    border: 15px solid #e0c3083b;
+    border: 15px solid #d4c148d6;
     padding: 0;
     overflow: hidden;
+    background: black;
 }
 
 .Inventory-display-container {
@@ -40,10 +37,20 @@
     box-shadow: 10px 10px 0px rgba(0,0,0,.05), 1px 0 rgba(255,255,255,.1);
 }
 
+.Page-header {
+    margin-bottom: 1px;
+}
+
 .Zoom-in {
-    transform: scale(2) translate(25%, 25%);
+    transform: scale(2) translate(35%, 35%);
     transition-duration: 0.5s;
     transition-delay: 0.5s;
+}
+
+.Zoom-in-inventory {
+    transform: scale(2) translate(-30%, 35%);
+    transition-duration: 0.5s;
+    transition-delay: 0.25s;
 }
 
 .Level-completed {

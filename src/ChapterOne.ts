@@ -5,7 +5,7 @@ import {DungeonMap} from "./DungeonMap";
 import {StaticMapGenerator} from "./StaticMapGenerator";
 import {Player} from "./Player";
 import {
-    CHAPTER_ONE_EXIT_INTERACTION, CHAPTER_ONE_FINISHED,
+    CHAPTER_ONE_EXIT_INTERACTION, CHAPTER_ONE_FINISHED, DISPLAY_INVENTORY_ZOOM_IN,
     DISPLAY_TUTORIAL_MESSAGE,
     DISPLAY_ZOOM_IN, DISPLAY_ZOOM_OUT,
     FINISHED_PLAYERS_TURN, ITEM_ADDED_TO_INVENTORY,
@@ -96,7 +96,26 @@ export class ChapterOne implements IGameEngine{
                 "</div>"
             );
         } else if(this.tutorialProgress == 3) {
-
+            this.appEventsEmitter.emit(DISPLAY_INVENTORY_ZOOM_IN);
+            this.appEventsEmitter.emit(DISPLAY_TUTORIAL_MESSAGE, "All the swag 💰💸👛💎✨",
+                "<div className_='Tutorial-text'>" +
+                "<p><b>Excellent, you've picked up your first item</b></p>" +
+                "<p>You can see the items that you are currently holding in your inventory <b>👉</b></p>" +
+                "<p>You've picked up the <b>Pairing Knife</b>, now all you need to do is find the <b>Potato Peeler</b>!" +
+                "<br />" +
+                "<p><b>Keep searching the dungeon. You've got this!</b></p>" +
+                "</div>"
+            );
+        } else if(this.tutorialProgress == 4) {
+            this.appEventsEmitter.emit(DISPLAY_INVENTORY_ZOOM_IN);
+            this.appEventsEmitter.emit(DISPLAY_TUTORIAL_MESSAGE, "Mission accomplished 💯👊💪👏",
+                "<div className_='Tutorial-text'>" +
+                "<p><b>Awesome! You've picked up all of the items that Francisco sent you in here to get.</b></p>" +
+                "<p>The exit is at the start of the level. The exit door looks slightly different to the other doors; it's the <span className='Fgg-bgb Char'>+</span>.</p>" +
+                "<br />" +
+                "<p><b>Time to head back to the <b>exit</b>.</b></p>" +
+                "</div>"
+            );
         }
     }
 
@@ -147,6 +166,9 @@ export class ChapterOne implements IGameEngine{
 
     private handleItemAdded(item: Actor) {
         this.appEventsEmitter.emit(ITEM_ADDED_TO_INVENTORY, item);
+        if (this.tutorialProgress === 3 || this.tutorialProgress === 4) {
+            setTimeout(() =>this.showTutorial(), 500);
+        }
     }
 
     private readonly staticMap: string[][] = [
