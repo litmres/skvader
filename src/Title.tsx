@@ -58,6 +58,6 @@ export class Title extends Component{
             itemsList.map(function(item){
             return <span>{item}<br/></span>;
         });
-        return <pre>{ itemsList }</pre>
+        return <pre className="Intro-title">{ itemsList }</pre>
     }
 }

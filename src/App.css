@@ -36,6 +36,20 @@
     background: black;
 }
 
+.Intro-title {
+    position: absolute;
+    height: 100%;
+    text-align: center;
+    width: 100%;
+    padding: 15% 0 0 0;
+    border: 0;
+    margin: 0;
+    background: darkcyan;
+    font-weight: bolder;
+    font-size: x-large;
+    font-family: monospace;
+}
+
 .Inventory-display-container {
     height: 750px;
     background: black;
