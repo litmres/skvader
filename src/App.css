@@ -1,3 +1,6 @@
+body {
+    background: darkcyan;
+}
 .App {
     overflow: hidden;
 }
@@ -29,11 +32,30 @@
 }
 
 .Game-display-container {
-    border-radius: 15px;
-    border: 15px solid #D4AF37d6;
+    border-radius: 10px;
+    border: 10px solid #D4AF37d6;
     padding: 0;
     overflow: hidden;
     background: black;
+}
+
+.Title {
+    background: darkcyan;
+    font-weight: bolder;
+    font-family: monospace;
+    margin: 0;
+}
+
+.App-header-title {
+    text-align: left;
+}
+
+.Intro .row > div {
+    padding: 0;
+}
+
+.Intro .row pre {
+    padding-top: 30px;
 }
 
 .Intro-title {
@@ -43,11 +65,7 @@
     width: 100%;
     padding: 15% 0 0 0;
     border: 0;
-    margin: 0;
-    background: darkcyan;
-    font-weight: bolder;
     font-size: x-large;
-    font-family: monospace;
 }
 
 .Inventory-display-container {
@@ -74,7 +92,13 @@
 }
 
 .Page-header {
-    margin-bottom: 1px;
+    margin-bottom: 0;
+}
+
+pre {
+    border-radius: 0;
+    border: 0;
+    font-size: medium;
 }
 
 .Zoom-in {
@@ -97,4 +121,10 @@
     transition: transform 1.5s;
     transform: skew(45deg, 45deg) scale(0.1);
     transition-timing-function: cubic-bezier(1, 0.82, 1, 0.1);
+}
+
+@media screen and (min-width: 1970px) {
+    pre {
+        font-size: large;
+    }
 }

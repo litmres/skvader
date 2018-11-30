@@ -1,6 +1,6 @@
 import {EventEmitter} from "fbemitter";
 import React, {Component} from "react"
-import {Button, Col, Grid, Modal, PageHeader, Row, Well} from "react-bootstrap";
+import {Col, Grid, Modal, Row, Well} from "react-bootstrap";
 import {IEmitterProps} from "./IEmitterProps";
 import {
     CHAPTER_ONE_FINISHED, DISPLAY_INVENTORY_ZOOM_IN,
@@ -11,6 +11,7 @@ import {
 } from "./Constants";
 import {InventoryItems} from "./InventoryItems";
 import {CollectableItem} from "./CollectableItem";
+import {AppHeader} from "./AppHeader";
 
 interface GameDisplayState {
     gameDisplayClass: string
@@ -60,7 +61,7 @@ export class GameDisplay extends Component<IEmitterProps, GameDisplayState> {
     render() {
         return (
             <div>
-                <PageHeader className="Page-header">SKVADER</PageHeader>
+                <AppHeader designChoice={2}/>
                 <div id="Game-content">
                     <Grid fluid={true}>
                         <Row>

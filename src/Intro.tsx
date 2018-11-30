@@ -6,6 +6,8 @@ import {IEmitterProps} from "./IEmitterProps";
 import {IntroBackgroundRestaurant} from "./IntroBackgroundRestaurant";
 import {INTRO_SPEECH_TEXT, Owner} from "./Owner";
 import {Title} from "./Title";
+import {AppHeader} from "./AppHeader";
+import {Col, Grid, Row} from "react-bootstrap";
 
 interface IntroState {
     displayTitle: boolean,
@@ -48,13 +50,18 @@ export class Intro extends Component<IEmitterProps, IntroState> {
             display = <Title />;
         } else if (this.state.displayOwner) {
             display = (
-                <div className="intro-owner-and-restaurant">
-                    <div className="owner">
-                        <Owner dialogue={INTRO_SPEECH_TEXT[this.state.ownerDialogueNumber]} currentDialogueNumber={this.state.ownerDialogueNumber+1} maxDialogueNumber={INTRO_SPEECH_TEXT.length}/>
-                    </div>
-                    <div className="restaurant">
-                        <IntroBackgroundRestaurant/>
-                    </div>
+                <div>
+                    <AppHeader designChoice={2}/>
+                    <Grid className="intro-owner-and-restaurant" fluid={true}>
+                        <Row>
+                            <Col xs={12} md={8} className="owner">
+                                <Owner dialogue={INTRO_SPEECH_TEXT[this.state.ownerDialogueNumber]} currentDialogueNumber={this.state.ownerDialogueNumber+1} maxDialogueNumber={INTRO_SPEECH_TEXT.length}/>
+                            </Col>
+                            <Col xs={6} md={4} className="restaurant">
+                                <IntroBackgroundRestaurant/>
+                            </Col>
+                        </Row>
+                    </Grid>
                 </div>
             );
         }

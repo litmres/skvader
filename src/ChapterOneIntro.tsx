@@ -5,6 +5,8 @@ import {CHAPTER_ONE_INTRO_FINISHED, PROGRESS_DIALOGUE} from './Constants';
 import {IEmitterProps} from "./IEmitterProps";
 import {IntroBackgroundDoor} from "./IntroBackgroundDoor";
 import {CHAPTER_ONE_INTRO_TEXT, Owner} from "./Owner";
+import {AppHeader} from "./AppHeader";
+import {Col, Grid, Row} from "react-bootstrap";
 
 interface ChapterOneIntroState {
     ownerDialogueNumber: number
@@ -30,15 +32,18 @@ export class ChapterOneIntro extends Component<IEmitterProps, ChapterOneIntroSta
 
     render() {
         return (
-            <div className="Intro">
-                <div className="intro-owner-and-door">
-                    <div className="owner">
-                        <Owner dialogue={CHAPTER_ONE_INTRO_TEXT[this.state.ownerDialogueNumber]} currentDialogueNumber={this.state.ownerDialogueNumber+1} maxDialogueNumber={CHAPTER_ONE_INTRO_TEXT.length}/>
-                    </div>
-                    <div className="door">
-                        <IntroBackgroundDoor/>
-                    </div>
-                </div>
+            <div>
+                <AppHeader designChoice={2}/>
+                <Grid className="Intro" fluid={true}>
+                    <Row className="intro-owner-and-door">
+                        <Col xs={12} md={8} className="owner">
+                            <Owner dialogue={CHAPTER_ONE_INTRO_TEXT[this.state.ownerDialogueNumber]} currentDialogueNumber={this.state.ownerDialogueNumber+1} maxDialogueNumber={CHAPTER_ONE_INTRO_TEXT.length}/>
+                        </Col>
+                        <Col xs={6} md={4} className="door">
+                            <IntroBackgroundDoor/>
+                        </Col>
+                    </Row>
+                </Grid>
             </div>
         );
     }

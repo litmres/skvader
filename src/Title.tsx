@@ -1,9 +1,14 @@
 import React, {Component} from "react";
 
+export interface TitleProps {
+    designChoice? :  number
+    forHeader?: boolean
+}
+
 /**
- * Original Ascii art by Art by Anthony Thyssen: https://www.asciiart.eu/people/faces
+ *
  */
-export class Title extends Component{
+export class Title extends Component<TitleProps>{
     private readonly asciiTitle: string[][] = [
         ["    /  /\\         /__/|          ___         /  /\\        /  /::\\        /  /\\         /  /\\    \n" +
         "    /  /:/_       |  |:|         /__/\\       /  /::\\      /  /:/\\:\\      /  /:/_       /  /::\\   \n" +
@@ -54,10 +59,16 @@ export class Title extends Component{
         "                    ░              ░                      "]
     ];
     render() {
-        let itemsList = this.asciiTitle.sort(() => Math.random() - 0.5)[0];
-            itemsList.map(function(item){
-            return <span>{item}<br/></span>;
-        });
-        return <pre className="Intro-title">{ itemsList }</pre>
+        let designChoice: number;
+        if (! this.props.designChoice || this.props.designChoice > this.asciiTitle.length) {
+            designChoice = Math.floor(Math.random() * Math.floor(this.asciiTitle.length));
+        } else {
+            designChoice = this.props.designChoice;
+        }
+        console.log(designChoice);
+        if (this.props.forHeader) {
+            return <pre className="Title App-header-title"><span>{this.asciiTitle[designChoice]}</span></pre>
+        }
+        return <pre className="Title Intro-title"><span>{this.asciiTitle[designChoice]}</span></pre>
     }
 }
