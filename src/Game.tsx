@@ -19,7 +19,7 @@ export class Game {
     newGame(level: Level, appDisplayEventsEmitter: EventEmitter) {
         const gameDisplay = this.display.getContainer();
         // @ts-ignore
-        document.getElementById('game-display').appendChild(gameDisplay);
+        document.getElementById('Game-display').appendChild(gameDisplay);
         let gameEngine: IGameEngine;
         switch (level) {
             case Level.CHAPTER_ONE:

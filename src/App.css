@@ -2,6 +2,43 @@
     overflow: hidden;
 }
 
+.Page-header {
+    margin-bottom: 1px;
+}
+
+#Game-display {
+    background: #000;
+}
+
+.Game-display-container {
+    border-radius: 15px;
+    border: 15px solid #e0c3083b;
+    padding: 0;
+}
+
+.Inventory-display-container {
+    height: 750px;
+    background: black;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+#Inventory-display {
+
+}
+
+#Inventory-display h1 {
+    color: whitesmoke;
+}
+
+#Inventory-display .Inventory-container {
+    height: 630px;
+}
+
+.Inventory-container > .well {
+    box-shadow: 10px 10px 0px rgba(0,0,0,.05), 1px 0 rgba(255,255,255,.1);
+}
+
 .Zoom-in {
     transform: scale(2) translate(25%, 25%);
     transition-duration: 0.5s;

@@ -1,5 +1,5 @@
 export const DISPLAY_WIDTH: number = 100;
-export const DISPLAY_HEIGHT: number = 50;
+export const DISPLAY_HEIGHT: number = 40;
 
 // Event Constants
 export const TITLE_FINISHED: string = "title-finished";

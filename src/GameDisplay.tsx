@@ -1,6 +1,6 @@
 import {EventEmitter} from "fbemitter";
 import React, {Component} from "react"
-import {Button, Col, Grid, Modal, Row} from "react-bootstrap";
+import {Button, Col, Grid, Modal, PageHeader, Row, Well} from "react-bootstrap";
 import {IEmitterProps} from "./IEmitterProps";
 import {
     CHAPTER_ONE_FINISHED,
@@ -21,7 +21,7 @@ interface GameDisplayState {
     inventory: string[]
 }
 
-const GAME_DISPLAY_LAYOUT_CLASSES: string = "";
+const GAME_DISPLAY_LAYOUT_CLASSES: string = "border rounded";
 const INVENTORY_DISPLAY_LAYOUT_CLASSES: string = "";
 
 export class GameDisplay extends Component<IEmitterProps, GameDisplayState> {
@@ -55,32 +55,46 @@ export class GameDisplay extends Component<IEmitterProps, GameDisplayState> {
 
     render() {
         return (
-            <div id="game-content">
-                <Grid fluid={true}>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <div id="game-display" className={this.state.gameDisplayClass}>
-                            </div>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <div id="inventory-display" className={this.state.inventoryDisplayClass} hidden={! this.state.showInventory}>
-                                HELLO WORLD
-                            </div>
-                        </Col>
-                    </Row>
-                </Grid>
-                <div className="Modal-wrapper">
-                    <Modal show={this.state.showModal} onHide={this.handleCloseModal}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>{this.state.modalTitle}</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <div dangerouslySetInnerHTML={{__html: this.state.modalBody}} />
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button onClick={this.handleCloseModal}>Close</Button>
-                        </Modal.Footer>
-                    </Modal>
+            <div>
+                <PageHeader className="Page-header">SKVADER</PageHeader>
+                <div id="Game-content">
+                    <Grid fluid={true}>
+                        <Row>
+                            <Col xs={12} md={8} className="Game-display-container">
+                                <div id="Game-display" className={this.state.gameDisplayClass}>
+                                </div>
+                            </Col>
+                            <Col xs={6} md={4} className="Inventory-display-container" hidden={! this.state.showInventory}>
+                                <div id="Inventory-display" className={this.state.inventoryDisplayClass}>
+                                    <h1>Inventory</h1>
+                                    <Well className="Inventory-container" bsSize="small">
+                                        <Well>
+                                            TEST
+                                        </Well>
+                                        <Well>
+                                            TEST
+                                        </Well>
+                                        <Well>
+                                            TEST
+                                        </Well>
+                                    </Well>
+                                </div>
+                            </Col>
+                        </Row>
+                    </Grid>
+                    <div className="Modal-wrapper">
+                        <Modal show={this.state.showModal} onHide={this.handleCloseModal}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>{this.state.modalTitle}</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <div dangerouslySetInnerHTML={{__html: this.state.modalBody}} />
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button onClick={this.handleCloseModal}>Close</Button>
+                            </Modal.Footer>
+                        </Modal>
+                    </div>
                 </div>
             </div>
         )
