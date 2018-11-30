@@ -2,13 +2,35 @@
     overflow: hidden;
 }
 
+.Char {
+    font-size: xx-large;
+    font-family: monospace;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.Bgb {
+    background: black;
+}
+
+.Fgbr {
+    color: #9c6933;
+}
+.Fgg {
+    color: #D4AF37;
+}
+
+.Fgw {
+    color: white;
+}
+
 #Game-display {
     background: #000;
 }
 
 .Game-display-container {
     border-radius: 15px;
-    border: 15px solid #d4c148d6;
+    border: 15px solid #D4AF37d6;
     padding: 0;
     overflow: hidden;
     background: black;
@@ -45,6 +67,10 @@
     transform: scale(2) translate(35%, 35%);
     transition-duration: 0.5s;
     transition-delay: 0.5s;
+}
+
+.Tutorial-text {
+    font-size: large;
 }
 
 .Zoom-in-inventory {

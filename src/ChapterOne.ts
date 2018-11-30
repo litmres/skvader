@@ -58,11 +58,11 @@ export class ChapterOne implements IGameEngine{
         if (this.tutorialProgress === 0) {
             this.appEventsEmitter.emit(DISPLAY_ZOOM_IN);
             this.appEventsEmitter.emit(DISPLAY_TUTORIAL_MESSAGE, "Welcome to the Dungeon! 👻👹🎃👺☠️",
-                "<div className_='Tutorial-text'>" +
+                "<div class='Tutorial-text'>" +
                 "<p><b>Some information to get you started:</b></p>" +
-                "<p>Your character is represented by the <span className='Fgw-bgb Char'>@</span></p>" +
-                "<p>The walls of the dungeon are represented by <span className='Fgw-bgb Char'>#</span>s</p>" +
-                "<p>The, empty, floor tiles of the dungeon are represented by <span className='Fgw-bgb Char'>.</span>s</p>" +
+                "<p>Your character is represented by the <span class='Fgw Bgb Char'>@</span></p>" +
+                "<p>The walls of the dungeon are represented by <span class='Fgw Bgb Char'>#</span>s</p>" +
+                "<p>The, empty, floor tiles of the dungeon are represented by <span class='Fgw Bgb Char'>.</span>s</p>" +
                 "<br />" +
                 "<p>You can move your character around using the <b>Arrow Keys</b> or <b>WASD</b></p>" +
                 "<br />" +
@@ -72,10 +72,10 @@ export class ChapterOne implements IGameEngine{
         } else if (this.tutorialProgress === 1) {
             this.appEventsEmitter.emit(DISPLAY_ZOOM_IN);
             this.appEventsEmitter.emit(DISPLAY_TUTORIAL_MESSAGE, "Putting your best foot forward. 🚶👣🏃💨",
-                "<div className_='Tutorial-text'>" +
+                "<div class='Tutorial-text'>" +
                 "<p><b>Looks like you have gotten the hang of moving around. Here's some information to help you progress further:</b></p>" +
-                "<p>Closed doors are represented by <span className='Fgbr-bgb Char'>+</span> <i>e.g. the one at the end of this room.</i></p>" +
-                "<p>Open doors are represented by <span className='Fgbr-bgb Char'>/</span></p>" +
+                "<p>Closed doors are represented by <span class='Fgbr Bgb Char'>+</span> <i>e.g. the one at the end of this room.</i></p>" +
+                "<p>Open doors are represented by <span class='Fgbr Bgb Char'>/</span></p>" +
                 "<p>You can open that door by standing, on the tile, in front of it and pressing the <b>Space bar</b> or the <b>Return key</b></p>" +
                 "<br />" +
                 "<p><b>Time to open that door and find out what lies behind it!</b></p>" +
@@ -84,10 +84,10 @@ export class ChapterOne implements IGameEngine{
         } else if(this.tutorialProgress == 2) {
             this.appEventsEmitter.emit(DISPLAY_ZOOM_IN);
             this.appEventsEmitter.emit(DISPLAY_TUTORIAL_MESSAGE, "Loot crates 🗃️📦😲",
-                "<div className_='Tutorial-text'>" +
+                "<div class='Tutorial-text'>" +
                 "<p><b>Look over there at the other side of the room a crate...</b></p>" +
-                "<p>Crates are represented by <span className='Fgbr-bgb Char'>%</span>s <i>e.g. the one at the end of this room.</i></p>" +
-                "<p>Destroyed crates are represented by <span className='Fgw-bgb Char'>*</span>s</p>" +
+                "<p>Crates are represented by <span class='Fgbr Bgb Char'>%</span>s <i>e.g. the one at the end of this room.</i></p>" +
+                "<p>Destroyed crates are represented by <span class='Fgw Bgb Char'>*</span>s</p>" +
                 "<p>You can break open a crate by standing in front of it and pressing the <b>Space bar</b> or the <b>Return key</b></p>" +
                 "<br />" +
                 "<p>Sometimes crates will contain useful items that <b>can be picked up</b>...</p>" +
@@ -98,9 +98,9 @@ export class ChapterOne implements IGameEngine{
         } else if(this.tutorialProgress == 3) {
             this.appEventsEmitter.emit(DISPLAY_INVENTORY_ZOOM_IN);
             this.appEventsEmitter.emit(DISPLAY_TUTORIAL_MESSAGE, "All the swag 💰💸👛💎✨",
-                "<div className_='Tutorial-text'>" +
+                "<div class='Tutorial-text'>" +
                 "<p><b>Excellent, you've picked up your first item</b></p>" +
-                "<p>You can see the items that you are currently holding in your inventory <b>👉</b></p>" +
+                "<p>You can see the items that you are currently holding in your inventory</p>" +
                 "<p>You've picked up the <b>Pairing Knife</b>, now all you need to do is find the <b>Potato Peeler</b>!" +
                 "<br />" +
                 "<p><b>Keep searching the dungeon. You've got this!</b></p>" +
@@ -109,9 +109,9 @@ export class ChapterOne implements IGameEngine{
         } else if(this.tutorialProgress == 4) {
             this.appEventsEmitter.emit(DISPLAY_INVENTORY_ZOOM_IN);
             this.appEventsEmitter.emit(DISPLAY_TUTORIAL_MESSAGE, "Mission accomplished 💯👊💪👏",
-                "<div className_='Tutorial-text'>" +
+                "<div class='Tutorial-text'>" +
                 "<p><b>Awesome! You've picked up all of the items that Francisco sent you in here to get.</b></p>" +
-                "<p>The exit is at the start of the level. The exit door looks slightly different to the other doors; it's the <span className='Fgg-bgb Char'>+</span>.</p>" +
+                "<p>The exit is at the start of the level. The exit door looks slightly different to the other doors; it's the <span class='Fgg Bgb Char'>+</span>.</p>" +
                 "<br />" +
                 "<p><b>Time to head back to the <b>exit</b>.</b></p>" +
                 "</div>"
