@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import './App.css';
-import {Game} from "./Game";
+import {Well} from "react-bootstrap";
+import {CollectableItem} from "./CollectableItem";
 
-interface GameStateProps { gameInstance :  Game }
+interface InventoryItemsProps { items :  CollectableItem[] }
 
-export class InventoryItems extends Component<GameStateProps> {
+export class InventoryItems extends Component<InventoryItemsProps> {
   render() {
-    return null;
+    return this.props.items.map((item: CollectableItem) => {
+
+        return (
+            <Well key={item.toHash()}>{item.symbol}</Well>
+        )
+    });
   }
 }

@@ -9,6 +9,8 @@ import {
     DISPLAY_ZOOM_OUT, ITEM_ADDED_TO_INVENTORY, START_CHAPTER_TWO_DIALOGUE,
     USER_DISMISSED_TUTORIAL_MESSAGE
 } from "./Constants";
+import {InventoryItems} from "./InventoryItems";
+import {CollectableItem} from "./CollectableItem";
 
 interface GameDisplayState {
     gameDisplayClass: string
@@ -18,7 +20,7 @@ interface GameDisplayState {
     modalTitle: string
     modalBody: string
     showInventory: boolean,
-    inventory: string[]
+    inventory: CollectableItem[]
 }
 
 const GAME_DISPLAY_LAYOUT_CLASSES: string = "border rounded";
@@ -68,15 +70,7 @@ export class GameDisplay extends Component<IEmitterProps, GameDisplayState> {
                                 <div id="Inventory-display" className={this.state.inventoryDisplayClass}>
                                     <h1>Inventory</h1>
                                     <Well className="Inventory-container" bsSize="small">
-                                        <Well>
-                                            TEST
-                                        </Well>
-                                        <Well>
-                                            TEST
-                                        </Well>
-                                        <Well>
-                                            TEST
-                                        </Well>
+                                        <InventoryItems items={this.state.inventory}/>
                                     </Well>
                                 </div>
                             </Col>
@@ -129,16 +123,18 @@ export class GameDisplay extends Component<IEmitterProps, GameDisplayState> {
         });
     }
 
-    private handleInventoryUpdated() {
+    private handleInventoryUpdated(item: CollectableItem) {
         if(! this.state.showInventory) {
             this.setState({
                 showInventory: true
             });
         }
+        this.setState(prevState => ({
+            inventory: [...prevState.inventory, item]
+        }))
     }
 
     private handleLevelCompleted() {
-        console.log("about to finish")
         this.state.emitter.removeAllListeners(DISPLAY_ZOOM_IN);
         this.state.emitter.removeAllListeners(DISPLAY_ZOOM_OUT);
         this.state.emitter.removeAllListeners(DISPLAY_TUTORIAL_MESSAGE);

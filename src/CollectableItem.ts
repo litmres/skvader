@@ -1,8 +1,8 @@
 import {Interactable} from "./Interactable";
 import {Actor} from "./Actor";
 import {EventEmitter} from "fbemitter";
-import {ActorFactory, TileType} from "./ActorFactory";
 import {ITEM_ADDED_TO_INVENTORY} from "./Constants";
+import {createHash} from "crypto";
 
 export class CollectableItem extends Interactable {
 
@@ -23,4 +23,13 @@ export class CollectableItem extends Interactable {
         super.interactWith();
         this.gameEventsEmitter.emit(ITEM_ADDED_TO_INVENTORY, this);
     }
+
+    toHash(): string {
+        const stringRepresentation = `${this.symbol}, ${this.foregroundColor}, ${this.backgroundColor}, ${this.metadata}`;
+        const data = createHash('md5').update(stringRepresentation, 'ascii');
+        return data.digest('hex');
+    }
 }
+
+
+

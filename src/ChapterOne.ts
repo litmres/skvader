@@ -146,7 +146,6 @@ export class ChapterOne implements IGameEngine{
     }
 
     private handleItemAdded(item: Actor) {
-        console.log("item: ", item);
         this.appEventsEmitter.emit(ITEM_ADDED_TO_INVENTORY, item);
     }
 
