@@ -37,17 +37,17 @@ class App extends Component<{}, GameState> {
 
     render() {
         let display;
-        /*if (this.state.isIntroFinished && ! this.state.isChapterOneIntroFinished) {
+        if (this.state.isIntroFinished && ! this.state.isChapterOneIntroFinished) {
             display = <ChapterOneIntro globalEmitter={this.state.emitter}/>
-        } else if (this.state.isIntroFinished && this.state.isChapterOneIntroFinished) {*/
+        } else if (this.state.isIntroFinished && this.state.isChapterOneIntroFinished) {
             display = <GameDisplay globalEmitter={this.state.emitter}/>;
             // TODO figure out a better way to ensure that the HTML element exists before starting the game
             setTimeout(() => {
                 this.state.emitter.emit(START_GAME, Level.CHAPTER_ONE);
             }, 500);
-        /*} else {
+        } else {
             display = <Intro globalEmitter={this.state.emitter}/>
-        }*/
+        }
         return (
             <div className="App">
                 {display}
