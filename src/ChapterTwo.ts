@@ -33,9 +33,9 @@ export class ChapterTwo implements IGameEngine{
         this.gameEventsEmitter = new EventEmitter();
         this.gameEventsEmitter.addListener(START_PLAYERS_TURN, this.handlePlayersTurnStart.bind(this));
         this.gameEventsEmitter.addListener(FINISHED_PLAYERS_TURN, this.handlePlayersTurnEnded.bind(this));
-        this.gameEventsEmitter.addListener(CHAPTER_ONE_EXIT_INTERACTION, this.handleExitInteraction.bind(this));
-        this.gameEventsEmitter.addListener(ITEM_ADDED_TO_INVENTORY, this.handleItemAdded.bind(this));
-        this.appEventsEmitter.addListener(USER_DISMISSED_TUTORIAL_MESSAGE, this.giveControlBackToPlayer.bind(this));
+        // this.gameEventsEmitter.addListener(CHAPTER_ONE_EXIT_INTERACTION, this.handleExitInteraction.bind(this));
+        // this.gameEventsEmitter.addListener(ITEM_ADDED_TO_INVENTORY, this.handleItemAdded.bind(this));
+        // this.appEventsEmitter.addListener(USER_DISMISSED_TUTORIAL_MESSAGE, this.giveControlBackToPlayer.bind(this));
         this.display = _display;
         let {d, t, v} = StaticMapGenerator.construct(this.staticMap, this.gameEventsEmitter);
         this.dungeonMap = d;
@@ -51,7 +51,7 @@ export class ChapterTwo implements IGameEngine{
     start(): void {
         this.updatePlayersFieldOfView();
         this.visibleDungeonMap.draw(this.display);
-        this.showTutorial();
+        // this.showTutorial();
     }
 
     private showTutorial(): void {
@@ -147,28 +147,20 @@ export class ChapterTwo implements IGameEngine{
         this.gameEngine.unlock();
         let x = this.player.getX();
         let y = this.player.getY();
-        if (this.tutorialProgress === 1 && (x === 9 && (y > 1 && y < 9)) || ((y === 1 || y === 9) && x === 10)) {
-            return this.showTutorial();
-        } else if (this.tutorialProgress === 2 && (x === 18 && (y > 1 && y < 9)) || ((y === 1 || y === 9) && x === 19)) {
-            return this.showTutorial();
-        }
     }
 
     private handleExitInteraction() {
         if (this.tutorialProgress > 1) {
             this.gameEventsEmitter.removeAllListeners(START_PLAYERS_TURN);
             this.gameEventsEmitter.removeAllListeners(FINISHED_PLAYERS_TURN);
-            this.gameEventsEmitter.removeAllListeners(CHAPTER_ONE_EXIT_INTERACTION);
-            this.appEventsEmitter.removeAllListeners(USER_DISMISSED_TUTORIAL_MESSAGE);
-            this.appEventsEmitter.emit(CHAPTER_ONE_FINISHED);
+            // this.gameEventsEmitter.removeAllListeners(CHAPTER_ONE_EXIT_INTERACTION);
+            // this.appEventsEmitter.removeAllListeners(USER_DISMISSED_TUTORIAL_MESSAGE);
+            // this.appEventsEmitter.emit(CHAPTER_ONE_FINISHED);
         }
     }
 
     private handleItemAdded(item: Actor) {
         this.appEventsEmitter.emit(ITEM_ADDED_TO_INVENTORY, item);
-        if (this.tutorialProgress === 3 || this.tutorialProgress === 4) {
-            setTimeout(() =>this.showTutorial(), 500);
-        }
     }
 
     private readonly staticMap: string[][] = [
