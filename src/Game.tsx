@@ -4,6 +4,7 @@ import {Level} from "./Level";
 import {IGameEngine} from "./IGameEngine";
 import {ChapterOne} from "./ChapterOne";
 import {EventEmitter} from "fbemitter";
+import {ChapterTwo} from "./ChapterTwo";
 
 export class Game {
     private readonly display: Display;
@@ -26,7 +27,7 @@ export class Game {
                 gameEngine = new ChapterOne(this.display, appDisplayEventsEmitter);
                 break;
             case Level.CHAPTER_TWO:
-                gameEngine = new ChapterOne(this.display, appDisplayEventsEmitter);
+                gameEngine = new ChapterTwo(this.display, appDisplayEventsEmitter);
                 break;
             default:
                 gameEngine = new ChapterOne(this.display, appDisplayEventsEmitter);
