@@ -22,8 +22,10 @@ export class ChapterOneIntro extends Component<IEmitterProps, ChapterOneIntroSta
         };
 
         this.progressOwnerDialogue = this.progressOwnerDialogue.bind(this);
+        this.handleSkipDialogue = this.handleSkipDialogue.bind(this);
 
-        this.state.emitter.addListener(PROGRESS_DIALOGUE, this.progressOwnerDialogue)
+        this.state.emitter.addListener(PROGRESS_DIALOGUE, this.progressOwnerDialogue);
+        window.addEventListener("keydown", this.handleSkipDialogue);
     }
 
     componentDidMount() {
@@ -53,6 +55,7 @@ export class ChapterOneIntro extends Component<IEmitterProps, ChapterOneIntroSta
         if (ownerDialogueNumber === CHAPTER_ONE_INTRO_TEXT.length) {
             this.state.emitter.emit(CHAPTER_ONE_INTRO_FINISHED);
             this.state.emitter.removeAllListeners(PROGRESS_DIALOGUE);
+            window.removeEventListener("keydown", this.handleSkipDialogue);
         } else {
             this.setState({
                 ownerDialogueNumber: ownerDialogueNumber
@@ -61,6 +64,12 @@ export class ChapterOneIntro extends Component<IEmitterProps, ChapterOneIntroSta
             setTimeout(() => {
                 this.state.emitter.emit(PROGRESS_DIALOGUE, ++ownerDialogueNumber);
             }, 7000)
+        }
+    }
+
+    private handleSkipDialogue(event: KeyboardEvent) {
+        if (event.key === "Enter") {
+            this.progressOwnerDialogue(this.state.ownerDialogueNumber+1);
         }
     }
 }

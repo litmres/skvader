@@ -28,9 +28,11 @@ export class Intro extends Component<IEmitterProps, IntroState> {
 
         this.startOwnerDialogue = this.startOwnerDialogue.bind(this);
         this.progressOwnerDialogue = this.progressOwnerDialogue.bind(this);
+        this.handleSkipDialogue = this.handleSkipDialogue.bind(this);
 
         this.state.emitter.once(TITLE_FINISHED, this.startOwnerDialogue);
         this.state.emitter.addListener(PROGRESS_DIALOGUE, this.progressOwnerDialogue);
+        window.addEventListener("keydown", this.handleSkipDialogue);
     }
 
     componentDidMount() {
@@ -41,7 +43,7 @@ export class Intro extends Component<IEmitterProps, IntroState> {
             }, () => {
                 this.state.emitter.emit(TITLE_FINISHED);
             });
-        }, 2000)
+        }, 2000);
     }
 
     render() {
@@ -85,6 +87,7 @@ export class Intro extends Component<IEmitterProps, IntroState> {
     () => {
                 this.state.emitter.emit(INTRO_FINISHED);
                 this.state.emitter.removeAllListeners(PROGRESS_DIALOGUE);
+                window.removeEventListener("keydown", this.handleSkipDialogue);
             })
         } else {
             if (ownerDialogueNumber === 0) {
@@ -99,6 +102,12 @@ export class Intro extends Component<IEmitterProps, IntroState> {
             setTimeout(() => {
                 this.state.emitter.emit(PROGRESS_DIALOGUE, ++ownerDialogueNumber);
             }, 7000)
+        }
+    }
+
+    private handleSkipDialogue(event: KeyboardEvent) {
+        if (event.key === "Enter") {
+            this.progressOwnerDialogue(this.state.ownerDialogueNumber+1);
         }
     }
 }

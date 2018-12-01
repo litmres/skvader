@@ -65,7 +65,6 @@ export class Title extends Component<TitleProps>{
         } else {
             designChoice = this.props.designChoice;
         }
-        console.log(designChoice);
         if (this.props.forHeader) {
             return <pre className="Title App-header-title"><span>{this.asciiTitle[designChoice]}</span></pre>
         }
