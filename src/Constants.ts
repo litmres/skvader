@@ -1,4 +1,4 @@
-export const DISPLAY_WIDTH: number = 100;
+export const DISPLAY_WIDTH: number = 110;
 export const DISPLAY_HEIGHT: number = 40;
 
 // Event Constants
