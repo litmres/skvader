@@ -1,0 +1,135 @@
+body {
+    background: darkcyan;
+}
+.App {
+    overflow: hidden;
+}
+
+.Char {
+    font-size: xx-large;
+    font-family: monospace;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.Bgb {
+    background: black;
+}
+
+.Fgbr {
+    color: #9c6933;
+}
+.Fgg {
+    color: #D4AF37;
+}
+
+.Fgw {
+    color: white;
+}
+
+#Game-content {
+    padding-left: 9.5px;
+    padding-right: 9.5px;
+}
+
+#Game-display {
+    background: #000;
+}
+
+.Game-display-container {
+    border-radius: 10px;
+    border: 10px solid #D4AF37d6;
+    padding: 0;
+    overflow: hidden;
+    background: black;
+}
+
+.Title {
+    background: darkcyan;
+    font-weight: bolder;
+    font-family: monospace;
+    margin: 0;
+}
+
+.App-header-title {
+    text-align: left;
+}
+
+.Intro .row > div {
+    padding: 0;
+}
+
+.Intro .row pre {
+    padding-top: 30px;
+}
+
+.Intro-title {
+    position: absolute;
+    height: 100%;
+    text-align: center;
+    width: 100%;
+    padding: 15% 0 0 0;
+    border: 0;
+    font-size: x-large;
+}
+
+.Inventory-display-container {
+    height: 750px;
+    background: black;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+#Inventory-display {
+
+}
+
+#Inventory-display h1 {
+    color: whitesmoke;
+}
+
+#Inventory-display .Inventory-container {
+    height: 630px;
+}
+
+.Inventory-container > .well {
+    box-shadow: 10px 10px 0px rgba(0,0,0,.05), 1px 0 rgba(255,255,255,.1);
+}
+
+.Page-header {
+    margin-bottom: 0;
+}
+
+pre {
+    border-radius: 0;
+    border: 0;
+    font-size: medium;
+}
+
+.Zoom-in {
+    transform: scale(2) translate(35%, 35%);
+    transition-duration: 0.5s;
+    transition-delay: 0.5s;
+}
+
+.Tutorial-text {
+    font-size: large;
+}
+
+.Zoom-in-inventory {
+    transform: scale(2) translate(-30%, 35%);
+    transition-duration: 0.5s;
+    transition-delay: 0.25s;
+}
+
+.Level-completed {
+    transition: transform 1.5s;
+    transform: skew(45deg, 45deg) scale(0.1);
+    transition-timing-function: cubic-bezier(1, 0.82, 1, 0.1);
+}
+
+@media screen and (min-width: 1970px) {
+    pre {
+        font-size: large;
+    }
+}
