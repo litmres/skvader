@@ -1,19 +1,14 @@
-import {EventEmitter} from "fbemitter";
 import React, { Component } from 'react';
 import './App.css';
-import {CHAPTER_ONE_INTRO_FINISHED, PROGRESS_DIALOGUE} from './Constants';
+import {CHAPTER_TWO_INTRO_FINISHED, PROGRESS_DIALOGUE} from './Constants';
 import {IEmitterProps} from "./IEmitterProps";
 import {IntroBackgroundDoor} from "./IntroBackgroundDoor";
-import {CHAPTER_ONE_INTRO_TEXT, Owner} from "./Owner";
+import {CHAPTER_TWO_INTRO_TEXT, Owner} from "./Owner";
 import {AppHeader} from "./AppHeader";
 import {Col, Grid, Row} from "react-bootstrap";
+import {ChapterIntroState} from "./ChapterOneIntro";
 
-export interface ChapterIntroState {
-    ownerDialogueNumber: number
-    emitter: EventEmitter
-}
-
-export class ChapterOneIntro extends Component<IEmitterProps, ChapterIntroState> {
+export class ChapterTwoIntro extends Component<IEmitterProps, ChapterIntroState> {
     constructor(props: any) {
         super(props);
         this.state = {
@@ -39,7 +34,7 @@ export class ChapterOneIntro extends Component<IEmitterProps, ChapterIntroState>
                 <Grid className="Intro" fluid={true}>
                     <Row className="intro-owner-and-door">
                         <Col xs={12} md={8} className="owner">
-                            <Owner dialogue={CHAPTER_ONE_INTRO_TEXT[this.state.ownerDialogueNumber]} currentDialogueNumber={this.state.ownerDialogueNumber+1} maxDialogueNumber={CHAPTER_ONE_INTRO_TEXT.length}/>
+                            <Owner dialogue={CHAPTER_TWO_INTRO_TEXT[this.state.ownerDialogueNumber]} currentDialogueNumber={this.state.ownerDialogueNumber+1} maxDialogueNumber={CHAPTER_TWO_INTRO_TEXT.length}/>
                         </Col>
                         <Col xs={6} md={4} className="door">
                             <IntroBackgroundDoor/>
@@ -52,8 +47,8 @@ export class ChapterOneIntro extends Component<IEmitterProps, ChapterIntroState>
 
     private progressOwnerDialogue(ownerDialogueNumber: number) {
         // If we have reached the end of the Owners dialogue then end the introduction
-        if (ownerDialogueNumber === CHAPTER_ONE_INTRO_TEXT.length) {
-            this.state.emitter.emit(CHAPTER_ONE_INTRO_FINISHED);
+        if (ownerDialogueNumber === CHAPTER_TWO_INTRO_TEXT.length) {
+            this.state.emitter.emit(CHAPTER_TWO_INTRO_FINISHED);
             this.state.emitter.removeAllListeners(PROGRESS_DIALOGUE);
             window.removeEventListener("keydown", this.handleSkipDialogue);
         } else {

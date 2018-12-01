@@ -9,6 +9,7 @@ export const CHAPTER_ONE_INTRO_FINISHED: string = "chapter-one-intro-finished";
 export const CHAPTER_ONE_EXIT_INTERACTION: string = "chapter-one-exit-interaction";
 export const CHAPTER_ONE_FINISHED: string = "chapter-one-finished";
 export const START_CHAPTER_TWO_DIALOGUE: string = "start-chapter-two-dialogue";
+export const CHAPTER_TWO_INTRO_FINISHED: string = "chapter-two-finished";
 export const START_GAME: string = "start-game";
 export const START_PLAYERS_TURN: string = "start-players-turn";
 export const FINISHED_PLAYERS_TURN: string = "finished-players-turn";

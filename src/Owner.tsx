@@ -122,3 +122,26 @@ export const CHAPTER_ONE_INTRO_TEXT = [
         "Remember: 1 Pairing Knife & 1 Potato Peeler..."
     ]
 ];
+
+export const CHAPTER_TWO_INTRO_TEXT = [
+    [
+        "Oh, you're back... very good.",
+        "It took you less time than expected.",
+        "I'll take the Pairing Knife & Potato Peeler for now, thanks."
+    ],
+    [
+        "Since you showed such aptitude, I've got another task for you.",
+        "I need you to get some more items for this evening's service.",
+        ""
+    ],
+    [
+        "As I mentioned, you will be preparing the fruit and vegetables.",
+        "However, we're running low on a few things, so I need you to go ",
+        "back into the storage room and retrieve the following..."
+    ],
+    [
+        "1 sack of potatoes. 1 bag of turnips. 1 bag of parsnips.",
+        "1 basket of apples. 1 punnet of strawberries. 1 coconut.",
+        ""
+    ]
+];

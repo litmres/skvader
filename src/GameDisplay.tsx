@@ -155,7 +155,7 @@ export class GameDisplay extends Component<IEmitterProps, GameDisplayState> {
         this.setState({
             gameDisplayClass: "Level-completed"
         }, () => {
-            setTimeout(() => this.state.emitter.emit(START_CHAPTER_TWO_DIALOGUE), 1000);
+            setTimeout(() => this.state.emitter.emit(START_CHAPTER_TWO_DIALOGUE, this.state.inventory.length), 1000);
         });
     }
 }
