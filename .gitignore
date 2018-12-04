@@ -62,3 +62,6 @@ typings/
 
 #IDE specific
 .idea
+
+# Build files
+build
