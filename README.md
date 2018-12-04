@@ -9,6 +9,15 @@ As you settle in to your new job and run errands for your new boss, you discover
 
 In Skvader, as you search the depths of  l' alimentation for the ingredients and equipment necessary to survive another evening's service in the restaurant, and improve as a chef, you are faced with difficult decisions - the consequences of which don't always result in a net-positive... 
 
+## Game Off Theme
+The theme for this year's Game Off was HYBRID! In which we were able to interpret that theme in any way that we wished.
+
+One of the suggestions of libraries/tools for those that were new to game development (such as myself) was to use [Ondras' rot-js](https://github.com/ondras/rot.js) ROguelike Toolkit.
+
+Since I was going to be using this library and building a Roguelike game, I knew that I had to incorporate dungeon crawling into the game somehow. As someone that both enjoys eating in restaurants and cooking, I decided to to make the game a hybrid of a culinary themed dungeon crawler.
+
+I was also keen for the game to have some depth around the hybrid theme and I found the perfect way to add this when looking for a name for the project. [Skvader](https://en.wikipedia.org/wiki/Skvader) is "a Swedish fictional creature that... has the forequarters and hindlegs of a European hare (Lepus europaeus), and the back, wings and tail of a female wood grouse" - a fictional hybrid creature. Also, "The term 'skvader' is nowadays used colloquially in Swedish to mean 'a bad compromise' or 'a combination of contradicting elements'". I incorporated this theme of bad compromises into the game too. 
+
 # Playing the Game
 
 
