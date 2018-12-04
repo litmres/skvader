@@ -20,8 +20,13 @@ I was also keen for the game to have some depth around the hybrid theme and I fo
 
 # Playing the Game
 
+The latest, released, version of the game can be found [here](http://skvader.s3-website-us-east-1.amazonaws.com/).
+
+The version of the game submitted as part of the Itch.io Game Off can be found hosted on [Itch.io](https://stevejaxon.itch.io/skvader).
 
 # Running the project locally
+
+To play the absolute bleeding edge version of the game, run the repository locally:
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
